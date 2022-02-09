@@ -1,16 +1,10 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider />
-<MudDialogProvider />
-<MudSnackbarProvider />
-
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+<MudThemeProvider Theme="MyCustomTheme" />
 <MudLayout>
-    <MudAppBar Elevation="0">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Custom.Brands.MudBlazor" Color="Color.Inherit" Link="https://mudblazor.com/" Target="_blank" />
-        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/Garderoben/MudBlazor" Target="_blank" />
-    </MudAppBar>y
+    <NavMenu></NavMenu>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.Large" Class="my-16 pt-16">
             @Body
@@ -25,4 +19,12 @@
     {
         _drawerOpen = !_drawerOpen;
     }
+    MudTheme MyCustomTheme = new MudTheme()
+    {
+        Palette = new Palette
+        {
+            Secondary = "#ffffffff"
+        }
+    };
+
 }
