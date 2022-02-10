@@ -11,6 +11,10 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
 		<PackageReference Include="MudBlazor" Version="6.0.2" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Shared\GuideComponents" />
+	</ItemGroup>
 	
 	
 </Project>
