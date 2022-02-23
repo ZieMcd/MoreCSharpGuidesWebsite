@@ -2,11 +2,30 @@
 <MudPaper>
     <MudText Typo="Typo.h4" Align="Align.Center">Blazor Authentication & Authorization with Okta and NameBasedAuthorizeViewComponent</MudText>
     <hr style="width:75%; margin: auto;">
-   
-    <MudText Typo="Typo.body1" Style="margin: 30px">Dotnet Blazor applications are unlike other dotnet web applications mainly because it is component based which prezents
-        a interesting way to handle Authorization</MudText>
+
+    <MudText Typo="Typo.body1" Style="margin: 30px">
+        Dotnet Blazor applications are unlike other dotnet web applications mainly because it is component based which prezents
+        a interesting way to handle Authorization. In a traditional a mvc application you could create you own implementation of
+        Microsoft's
+        <MudLink href="https://docs.microsoft.com/en-us/dotnet/api/system.web.mvc.authorizeattribute?view=aspnet-mvc-5.2" Target="_blank">
+            Authorize Attribute</MudLink> or use
+        <MudLink Href="https://docs.microsoft.com/en-us/aspnet/core/security/authorization/roles?view=aspnetcore-6.0" Target="_blank">
+            Role-based authorization</MudLink>.
+        Although you can use <MudLink Href="https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-6.0#authorize-attribute" Target="_blank">
+            Authorize Attribute on a blazor</MudLink> 
+        page I do dont think this utilizes Blazor's component based nature very well and I think the best solution is to use blazors 
+        <MudLink Href="https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-6.0#authorizeview-component" Target="_blank">
+            AuthorizeView component</MudLink>.
+        <MudText Style="margin-top: 10px" Typo="Typo.h5">AuthorizeView component</MudText>
+        <hr style="width: 60%">
+        The AuthorizeView component is great. It allows for so much conttoller over what users can and can not see. I will give a small example to demonstrate.
+        <CodeBlock>
+            testing code block
+        </CodeBlock>
+        
+    </MudText>
 </MudPaper>
 
 @code {
-    
+
 }

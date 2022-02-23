@@ -1,0 +1,20 @@
+<pre>
+    <code>
+        @ChildContent
+    </code>
+</pre>
+
+
+
+@code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var a = 2;
+        base.OnInitialized();
+    }
+
+}

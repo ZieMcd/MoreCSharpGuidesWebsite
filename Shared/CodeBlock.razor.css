@@ -1,0 +1,28 @@
+pre {
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    border-radius: 6px;
+    word-wrap: normal;
+    margin-top: 0;
+    margin-bottom: 16px;
+    display: block;
+    white-space: pre;
+    background-color: #f6f8fa;
+}
+
+code {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    line-height: inherit;
+    word-wrap: normal;
+    border: 0;
+    word-break: normal;
+    white-space: pre;
+    background: transparent;
+    border-radius: 6px;
+    font-family: ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;
+}
