@@ -19,13 +19,24 @@
         <MudText Style="margin-top: 10px" Typo="Typo.h5">AuthorizeView component</MudText>
         <hr style="width: 60%">
         The AuthorizeView component is great. It allows for so much conttoller over what users can and can not see. I will give a small example to demonstrate.
-        <CodeBlock>
-            testing code block
-        </CodeBlock>
+        <CodeBlock  CodeAsString=@codea></CodeBlock>
         
     </MudText>
 </MudPaper>
 
 @code {
+
+    string codea = 
+        @" 
+        <AuthorizeView>
+                <Authorized>
+                    <h1>Hello</h1>
+                    <p>You can only see this content if you're authorized.</p>
+                </Authorized>
+                <NotAuthorized>
+                    <h1>Authentication Failure!</h1>
+                    <p>You're not signed in.</p>
+                </NotAuthorized>
+        </AuthorizeView>";
 
 }

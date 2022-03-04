@@ -1,20 +1,16 @@
+@using MudBlazor.Extensions
 <pre>
     <code>
-        @ChildContent
+       @CodeAsString
     </code>
 </pre>
 
 
-
 @code {
-
+    //privates stringmarkup;
+   
     [Parameter]
-    public RenderFragment ChildContent { get; set; }
-
-    protected override void OnInitialized()
-    {
-        var a = 2;
-        base.OnInitialized();
-    }
+    public string CodeAsString { get; set; }
+    
 
 }
