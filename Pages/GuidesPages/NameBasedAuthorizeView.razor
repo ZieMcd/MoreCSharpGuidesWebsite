@@ -16,27 +16,45 @@
         page I do dont think this utilizes Blazor's component based nature very well and I think the best solution is to use blazors 
         <MudLink Href="https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-6.0#authorizeview-component" Target="_blank">
             AuthorizeView component</MudLink>.
+        <br>
         <MudText Style="margin-top: 10px" Typo="Typo.h5">AuthorizeView component</MudText>
         <hr style="width: 60%">
+        <br>
         The AuthorizeView component is great. It allows for so much conttoller over what users can and can not see. I will give a small example to demonstrate.
-        <CodeBlock  CodeAsString=@codea></CodeBlock>
-        
+        <CodeBlock CodeAsString=@AuthorizedView></CodeBlock>
+        In the code above if the user is Authorized he will see what ever is between &lt;Authorized&gt; tags, if the user is not Authorized he will see what ever is 
+        between the &lt;NotAuthorized&gt;. <br>
+        This already gives so much power over what the user will see if he not Authorized, every Component you have can have its own view if the user is not authorized.
+        You can extend this power by using role-based authorization with the Roles parameter: 
+        <CodeBlock CodeAsString=@AuthorizedViewRoles></CodeBlock>
+
     </MudText>
 </MudPaper>
 
 @code {
 
-    string codea = 
-        @" 
-        <AuthorizeView>
-                <Authorized>
-                    <h1>Hello</h1>
-                    <p>You can only see this content if you're authorized.</p>
-                </Authorized>
-                <NotAuthorized>
-                    <h1>Authentication Failure!</h1>
-                    <p>You're not signed in.</p>
-                </NotAuthorized>
-        </AuthorizeView>";
+    string AuthorizedView = 
+@"<AuthorizeView>
+    <Authorized>
+        <h1>Hello</h1>
+        <p>You can only see this content if you're authorized.</p>
+    </Authorized>
+    <NotAuthorized>
+        <h1>Authentication Failure!</h1>
+        <p>You're not signed in.</p>
+    </NotAuthorized>
+</AuthorizeView>";
+
+    string AuthorizedViewRoles =
+@"<AuthorizeView Roles= ""admin"">
+    <Authorized>
+        <h1>Hello</h1>
+        <p>You can only see this content if you have the admin role.</p>
+    </Authorized>
+    <NotAuthorized>
+        <h1>Authentication Failure!</h1>
+        <p>You are not admin    .</p>
+    </NotAuthorized>
+</AuthorizeView>";
 
 }
