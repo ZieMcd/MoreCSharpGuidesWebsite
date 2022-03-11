@@ -1,7 +1,7 @@
 @page "/NameBasedAuthorizeView"
-<MudPaper Style="background: #f0f8ff">
+<MudPaper Style="background: #f0f8ff; padding-top: 20px" >
     <MudText Typo="Typo.h4" Align="Align.Center">Blazor Authentication & Authorization with Okta and NameBasedAuthorizeViewComponent</MudText>
-    <hr style="width:75%; margin: auto;">
+    <hr style="width:75%; margin: auto; ">
 
     <MudText Typo="Typo.body1" Style="margin: 30px">
         Dotnet Blazor applications are unlike other dotnet web applications mainly because it is component based which prezents
@@ -47,7 +47,7 @@
         <hr style="width: 60%">
         Now that I have given you some background infomation on Authetication in blazor and why I create the NameBasedAuthorizedComponent I am going to give you a full guide
         on how to get how to Authetication working in blazor from scratch and with using the NameBasedAuthorizedComponent.
-        <MudText Style="margin-top: 10px" Typo="Typo.h6">Picking an Idendty Provider</MudText>
+        <MudText Style="margin-top: 10px" Typo="Typo.h6">Picking an Idendtity Provider</MudText>
         <hr style="width: 40%">
         The first thing we need to is pick a Idendtity Provider. If you don't what a Idendtity Provider is I recomend doing some research but for now I will give a you a breif
         explanation. It is what your site use to determine who a user is, It can send info like there username, age, email ect. In our case we want an I a Idendtity Provider that
@@ -66,6 +66,8 @@
         we will circle back to them later. In the mean time name the application (I named it SampleApp), under Client acting on behalf of a user tick <i>"Implicit (hybrid)"</i> and 
         under Controlled access select <i>"Skip group assignment for now"</i>
         <MudText><img src="Images/OktaCreateAppIntergrationFullForm.png" alt="Okta Create App Integration all settings"></MudText>
+        After you click save you should done. Your Okta app is set up! You will some more setting like Client Credentials we will come back to that but first we must create are Blazor
+        project.
     </MudText>
 </MudPaper>
 
