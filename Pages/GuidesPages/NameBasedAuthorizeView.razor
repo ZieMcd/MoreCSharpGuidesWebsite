@@ -27,7 +27,10 @@
         This already gives so much power over what the user will see if he not Authorized, every Component you have can have its own view if the user is not authorized.
         You can extend this power by using role-based authorization with the Roles parameter: 
         <CodeBlock CodeAsString=@AuthorizedViewRoles></CodeBlock>
-
+        This feature is amazing, you can have multiple of theese components on single page wiht different roles. That means two differnet users can see complete differents
+        versions of the same page. For example you can have a dashboard page with three components that have the admin role and two more components that have the common role.
+        This means if your a user with both admin and common role you can see all the compontes on the page, if the user only has the common role he will only be able to see
+        the two components.
     </MudText>
 </MudPaper>
 
@@ -53,7 +56,7 @@
     </Authorized>
     <NotAuthorized>
         <h1>Authentication Failure!</h1>
-        <p>You are not admin    .</p>
+        <p>You are not admin.</p>
     </NotAuthorized>
 </AuthorizeView>";
 
