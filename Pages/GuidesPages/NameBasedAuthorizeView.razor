@@ -1,5 +1,5 @@
 @page "/NameBasedAuthorizeView"
-<MudPaper>
+<MudPaper Style="background: #f0f8ff">
     <MudText Typo="Typo.h4" Align="Align.Center">Blazor Authentication & Authorization with Okta and NameBasedAuthorizeViewComponent</MudText>
     <hr style="width:75%; margin: auto;">
 
@@ -8,36 +8,71 @@
         a interesting way to handle Authorization. In a traditional a mvc application you could create you own implementation of
         Microsoft's
         <MudLink href="https://docs.microsoft.com/en-us/dotnet/api/system.web.mvc.authorizeattribute?view=aspnet-mvc-5.2" Target="_blank">
-            Authorize Attribute</MudLink> or use
+            Authorize Attribute
+        </MudLink> or use
         <MudLink Href="https://docs.microsoft.com/en-us/aspnet/core/security/authorization/roles?view=aspnetcore-6.0" Target="_blank">
-            Role-based authorization</MudLink>.
-        Although you can use <MudLink Href="https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-6.0#authorize-attribute" Target="_blank">
-            Authorize Attribute on a blazor</MudLink> 
-        page I do dont think this utilizes Blazor's component based nature very well and I think the best solution is to use blazors 
+            Role-based authorization
+        </MudLink>.
+        Although you can use
+        <MudLink Href="https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-6.0#authorize-attribute" Target="_blank">
+            Authorize Attribute on a blazor
+        </MudLink>
+        page I do dont think this utilizes Blazor's component based nature very well and I think the best solution is to use blazors
         <MudLink Href="https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-6.0#authorizeview-component" Target="_blank">
-            AuthorizeView component</MudLink>.
+            AuthorizeView component
+        </MudLink>.
         <br>
-        <MudText Style="margin-top: 10px" Typo="Typo.h5">AuthorizeView component</MudText>
+        <MudText Style="margin-top: 10px" Typo="Typo.h4">AuthorizeView component</MudText>
         <hr style="width: 60%">
         <br>
         The AuthorizeView component is great. It allows for so much conttoller over what users can and can not see. I will give a small example to demonstrate.
         <CodeBlock CodeAsString=@AuthorizedView></CodeBlock>
-        In the code above if the user is Authorized he will see what ever is between &lt;Authorized&gt; tags, if the user is not Authorized he will see what ever is 
+        In the code above if the user is Authorized he will see what ever is between &lt;Authorized&gt; tags, if the user is not Authorized he will see what ever is
         between the &lt;NotAuthorized&gt;. <br>
         This already gives so much power over what the user will see if he not Authorized, every Component you have can have its own view if the user is not authorized.
-        You can extend this power by using role-based authorization with the Roles parameter: 
+        You can extend this power by using role-based authorization with the Roles parameter:
         <CodeBlock CodeAsString=@AuthorizedViewRoles></CodeBlock>
         This feature is amazing, you can have multiple of theese components on single page wiht different roles. That means two differnet users can see complete differents
         versions of the same page. For example you can have a dashboard page with three components that have the admin role and two more components that have the common role.
         This means if your a user with both admin and common role you can see all the compontes on the page, if the user only has the common role he will only be able to see
         the two components.
+        <MudText Style="margin-top: 10px" Typo="Typo.h6">The problem with role-based AuthorizeView component</MudText>
+        I'm going to lay out a senerio, you have built and deployed your blazor application and it has many role-based AuthorizeViews but now you or company decided that
+        a component or multiple components can viewed by more or less roles. Now you need scan through your code and find all the components that need roles added or removed.
+        Not only do you have do that now you need to redeploy your code. <br/>
+        It because of this problem I created the <b>NameBasedAuthorizedComponent</b>. NameBasedAuthorizeComponent is very simial to Microsoft's AuthorizeView but you dont pass
+        in roles as a parameter but rather a ComponentName you will then implement an interface that uses the ComponentName to retrive the roles for that component. The great
+        thing about this is that you decide how you get roles for a component e.i. Api calls, connecting to a DB or even hardcode it.
+        <MudText Style="margin-top: 10px" Typo="Typo.h4">Getting Started</MudText>
+        <hr style="width: 60%">
+        Now that I have given you some background infomation on Authetication in blazor and why I create the NameBasedAuthorizedComponent I am going to give you a full guide
+        on how to get how to Authetication working in blazor from scratch and with using the NameBasedAuthorizedComponent.
+        <MudText Style="margin-top: 10px" Typo="Typo.h6">Picking an Idendty Provider</MudText>
+        <hr style="width: 40%">
+        The first thing we need to is pick a Idendtity Provider. If you don't what a Idendtity Provider is I recomend doing some research but for now I will give a you a breif
+        explanation. It is what your site use to determine who a user is, It can send info like there username, age, email ect. In our case we want an I a Idendtity Provider that
+        will provide roles for a user or something similar. The Idendtity Provider I have choosen for this guid is <MudLink href="https://www.okta.com/" Target="_blank">Okta</MudLink> , I like Okta
+        because it's pretty easy to set up and has a nice GUI
+        <MudText Style="margin-top: 10px" Typo="Typo.h6">Setting up okta</MudText>
+        The first thing you need to do is create a okta account at <MudLink href="https://developer.okta.com/signup/" Target="_blank">https://developer.okta.com/signup/</MudLink>.
+        <MudText><img src="Images/OktaSignUp.PNG" alt="Okta signup form"></MudText>
+        After you have signed in you should have a dashboard take looks like the below
+        <MudText><img src="Images/OktaMainDashboard.png" alt="Okta dashboard"></MudText>
+        From here head to Applications -> Applications and click Create App Intergration.
+        <MudText><img src="Images/OktaCreateAppIntergration.png" alt="Okta App Integration Button"></MudText>
+        Now we need to select our sign method which should be OIDC and our Application Type which is Web Application
+        <MudText><img src="Images/OktaCreateAppIntergrationMethodAndType.png" alt="Okta Create App Integration select method and type form"></MudText>
+        Now that we have selected our sign method and our Application Type, we can set all the settings for our Okta application. For now most of setting are not important and 
+        we will circle back to them later. In the mean time name the application (I named it SampleApp), under Client acting on behalf of a user tick <i>"Implicit (hybrid)"</i> and 
+        under Controlled access select <i>"Skip group assignment for now"</i>
+        <MudText><img src="Images/OktaCreateAppIntergrationFullForm.png" alt="Okta Create App Integration all settings"></MudText>
     </MudText>
 </MudPaper>
 
 @code {
 
-    string AuthorizedView = 
-@"<AuthorizeView>
+    string AuthorizedView =
+        @"<AuthorizeView>
     <Authorized>
         <h1>Hello</h1>
         <p>You can only see this content if you're authorized.</p>
@@ -49,7 +84,7 @@
 </AuthorizeView>";
 
     string AuthorizedViewRoles =
-@"<AuthorizeView Roles= ""admin"">
+        @"<AuthorizeView Roles= ""admin"">
     <Authorized>
         <h1>Hello</h1>
         <p>You can only see this content if you have the admin role.</p>

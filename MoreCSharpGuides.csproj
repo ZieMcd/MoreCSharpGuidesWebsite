@@ -15,6 +15,10 @@
 	<ItemGroup>
 	  <Folder Include="Shared\GuideComponents" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="wwwroot\Images\OktaCreateAppIntergrationFullForm.png" />
+	</ItemGroup>
 	
 	
 </Project>
