@@ -1,5 +1,5 @@
 @page "/NameBasedAuthorizeView"
-<MudPaper Style="background: #f0f8ff; padding-top: 20px" >
+<MudPaper Style="background: #f0f8ff; padding-top: 20px">
     <MudText Typo="Typo.h4" Align="Align.Center">Blazor Authentication & Authorization with Okta and NameBasedAuthorizeViewComponent</MudText>
     <hr style="width:75%; margin: auto; ">
 
@@ -55,19 +55,45 @@
         because it's pretty easy to set up and has a nice GUI
         <MudText Style="margin-top: 10px" Typo="Typo.h6">Setting up okta</MudText>
         The first thing you need to do is create a okta account at <MudLink href="https://developer.okta.com/signup/" Target="_blank">https://developer.okta.com/signup/</MudLink>.
-        <MudText><img src="Images/OktaSignUp.PNG" alt="Okta signup form"></MudText>
+        <MudText>
+            <img src="Images/OktaSignUp.PNG" alt="Okta signup form">
+        </MudText>
         After you have signed in you should have a dashboard take looks like the below
-        <MudText><img src="Images/OktaMainDashboard.png" alt="Okta dashboard"></MudText>
+        <MudText>
+            <img src="Images/OktaMainDashboard.png" alt="Okta dashboard">
+        </MudText>
         From here head to Applications -> Applications and click Create App Intergration.
-        <MudText><img src="Images/OktaCreateAppIntergration.png" alt="Okta App Integration Button"></MudText>
+        <MudText>
+            <img src="Images/OktaCreateAppIntergration.png" alt="Okta App Integration Button">
+        </MudText>
         Now we need to select our sign method which should be OIDC and our Application Type which is Web Application
-        <MudText><img src="Images/OktaCreateAppIntergrationMethodAndType.png" alt="Okta Create App Integration select method and type form"></MudText>
-        Now that we have selected our sign method and our Application Type, we can set all the settings for our Okta application. For now most of setting are not important and 
-        we will circle back to them later. In the mean time name the application (I named it SampleApp), under Client acting on behalf of a user tick <i>"Implicit (hybrid)"</i> and 
+        <MudText>
+            <img src="Images/OktaCreateAppIntergrationMethodAndType.png" alt="Okta Create App Integration select method and type form">
+        </MudText>
+        Now that we have selected our sign method and our Application Type, we can set all the settings for our Okta application. For now most of setting are not important and
+        we will circle back to them later. In the mean time name the application (I named it SampleApp), under Client acting on behalf of a user tick <i>"Implicit (hybrid)"</i> and
         under Controlled access select <i>"Skip group assignment for now"</i>
-        <MudText><img src="Images/OktaCreateAppIntergrationFullForm.png" alt="Okta Create App Integration all settings"></MudText>
+        <MudText>
+            <img src="Images/OktaCreateAppIntergrationFullForm.png" alt="Okta Create App Integration all settings">
+        </MudText>
         After you click save you should done. Your Okta app is set up! You will some more setting like Client Credentials we will come back to that but first we must create are Blazor
         project.
+        <MudText Style="margin-top: 10px" Typo="Typo.h6">Creating our Blazor Project</MudText>
+        For this guide I will be using a blazor server side project with .Net 6. The NameBasedAuthorizeViewComponent will work exactly same as on a webassembly project but the setting up of
+        Authentication will be slightly different. You are using a webassembly project I recomending reading
+        <MudLink Href="https://developer.okta.com/blog/2020/09/30/blazor-webassembly-wasm-dotnetcore" Target="_blank">
+            this
+        </MudLink> guide. <br>
+        @* Also anothere thing to note is that I am uising Rider as my ide. <br> *@
+        <br>
+        Alright so the first you need to do create your project , go to the folder where want to creat the project and open a terminal and type the following command.
+        <CodeBlock CodeAsString="@Command"></CodeBlock>
+        replace {The name of your App} with what ever you want name app in my case I called it AuthDemoApp. <br>
+        Now that we have created the project must install he okta nuget, it makes setting up and using okta much easier. To install the nuget use this command
+        <CodeBlock CodeAsString="dotnet add package Okta.AspNetCore"></CodeBlock>
+        I know there are many ways of adding nugets and creating projects, for demo purposes I am using the dotnet cli but feel free to use any method youl like. <br>
+        To configure Okta we need some configuration infomation from the Okta app we create earlier. Go back to the Okta portal and go to Applications -> Applications and you should
+        see the application you made earlier.
     </MudText>
 </MudPaper>
 
@@ -96,5 +122,7 @@
         <p>You are not admin.</p>
     </NotAuthorized>
 </AuthorizeView>";
+
+    string Command = @"dotnet new blazorserver -n ""{The name of your App}"" ";
 
 }
