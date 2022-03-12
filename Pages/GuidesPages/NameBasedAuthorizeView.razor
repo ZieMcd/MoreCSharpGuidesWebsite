@@ -92,8 +92,19 @@
         Now that we have created the project must install he okta nuget, it makes setting up and using okta much easier. To install the nuget use this command
         <CodeBlock CodeAsString="dotnet add package Okta.AspNetCore"></CodeBlock>
         I know there are many ways of adding nugets and creating projects, for demo purposes I am using the dotnet cli but feel free to use any method youl like. <br>
+        <MudText Style="margin-top: 10px" Typo="Typo.h6">Configuring Okta in our App</MudText>
         To configure Okta we need some configuration infomation from the Okta app we create earlier. Go back to the Okta portal and go to Applications -> Applications and you should
-        see the application you made earlier.
+        see the application you made earlier, click on it.
+        <MudText> <img src="Images/OktaFindYourApp.png" alt="Where to find your okta app"> </MudText>
+        From your okta app you need we need Client ID, Client secret and Okta domain. We going to put this in the appsettings.josn so we can use this in are project as config.
+        <MudText><img src="Images/OktaWhatSettingsYouNeed.png" alt="What settings you need to copy from okta app"></MudText>
+        And this what your app settings should look like.
+        <CodeBlock CodeAsString="@AppSetting"></CodeBlock>
+        Now we can configure authentication using Okta in Program.cs, under var builder = WebApplication.CreateBuilder(args); add
+        <CodeBlock CodeAsString="@AddAuth"></CodeBlock>
+        and then inbetween app.UseRouting(); and app.MapBlazorHub(); add 
+        <CodeBlock CodeAsString="@UseAuth"></CodeBlock>
+        And with that Okta authentication is set up and we can begin to use it
     </MudText>
 </MudPaper>
 
@@ -124,5 +135,41 @@
 </AuthorizeView>";
 
     string Command = @"dotnet new blazorserver -n ""{The name of your App}"" ";
+    
+    string AppSetting = 
+        @"{
+  ""Logging"": {
+    ""LogLevel"": {
+      ""Default"": ""Information"",
+      ""Microsoft.AspNetCore"": ""Warning""
+    }
+  },
+  ""AllowedHosts"": ""*"",
+  ""Okta"": {
+    ""Domain"": ""{yourOktaDomain}"",
+    ""ClientId"": ""{yourClientId}}"",
+    ""ClientSecret"": ""{yourClientSecret}""
+  }
+}";
+    
+    string AddAuth = 
+        @"builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+    })
+    .AddCookie()
+    .AddOktaMvc(new OktaMvcOptions
+    {
+        OktaDomain = builder.Configuration[""Okta:Domain""],
+        ClientId = builder.Configuration[""Okta:ClientId""],
+        ClientSecret = builder.Configuration[""Okta:ClientSecret""],
+        Scope = new List<string> {""openid"", ""profile"", ""email""},
+    });
+
+";
+
+    string UseAuth = "app.UseRouting();\n \napp.UseAuthentication(); \napp.UseAuthorization();\n \napp.MapBlazorHub();";
+
 
 }
