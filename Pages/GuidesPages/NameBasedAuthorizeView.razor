@@ -79,6 +79,7 @@
         After you click save you should done. Your Okta app is set up! You will some more setting like Client Credentials we will come back to that but first we must create are Blazor
         project.
         <MudText Style="margin-top: 10px" Typo="Typo.h6">Creating our Blazor Project</MudText>
+        <hr style="width: 40%">
         For this guide I will be using a blazor server side project with .Net 6. The NameBasedAuthorizeViewComponent will work exactly same as on a webassembly project but the setting up of
         Authentication will be slightly different. You are using a webassembly project I recomending reading
         <MudLink Href="https://developer.okta.com/blog/2020/09/30/blazor-webassembly-wasm-dotnetcore" Target="_blank">
@@ -104,7 +105,47 @@
         <CodeBlock CodeAsString="@AddAuth"></CodeBlock>
         and then inbetween app.UseRouting(); and app.MapBlazorHub(); add 
         <CodeBlock CodeAsString="@UseAuth"></CodeBlock>
+        Cover the content in App.razor with  &lt;CascadingAuthenticationState&gt;
+        <CodeBlock CodeAsString="@AppRazor"></CodeBlock>
+        You also need to add NameBasedAuthorizeViewComponent.Components to _Imports.cs
+        <CodeBlock CodeAsString="@Import"></CodeBlock>
         And with that Okta authentication is set up and we can begin to use it
+        <MudText Style="margin-top: 10px" Typo="Typo.h6">Created user sign in</MudText>
+        We are going to make a going to make Controller that will be used to log users in and out. Create a folder called Controllers in that folder create a class
+        called AccountController. The AccountController should look the like below 
+        <CodeBlock CodeAsString="@AccountController"></CodeBlock>
+        Also add app.MapControllers(); to program.cs between app.UseAuthorization(); and app.MapBlazorHub(); like so 
+        <CodeBlock CodeAsString="@AddMvc"></CodeBlock>
+        Before we use this controller we need to change some settings in your Okta app so go to your okta app like we did earlier and edit the General Settings. You should
+        see Sign-in redirect URIs and Sign-out redirect URIs under the heading LOGIN. Sign-in redirect URIs must be eqaul to 
+        <i>{Your projects base url}/authorization-code/callback</i>,  Sign-out redirect URIs must be eqaul to <i>{Your projects base url}/Account/PostLogout</i>. you can 
+        find your projects base url in Properties/launchSetting.json be sure to the https one. 
+        <MudText><img src="Images/OktaChangingUrlsInOkta.png" alt="Where to change okta redirect urls"></MudText>
+        Before we login with okta in our project we to create and assign user to okta app <br>
+        In the okta dashboard go to Directory->People. There should already one person there if not create one by clicking Add person. Once you have a person click on them.
+        <MudText><img src="Images/OktaPeople.png" alt="Where find people in okta"></MudText>
+        Once a person is selected click Assign Applications and assign the application we create earlier.
+        <MudText><img src="Images/OktaSelectedPerson.png" alt="Select a person in okta">  <img src="Images/OktaAssignPerson.png" alt="Assign app to person in okta"></MudText>
+        We are going to make a little display in the nav bar that redirects to our account controller. <br>
+        Create a new blazor component called LoginDisplay.razor and put it in the shared folder. The code for component should look like the below
+        <CodeBlock CodeAsString="@LogingDisplay"></CodeBlock>
+        If the user is signed in they will see there name and link to sign out if they are not signed in then they will see a link to sign in. <br>
+        Add &lt;LoginDisplay /&gt; to the MainLayout.razor 
+        <CodeBlock CodeAsString="@MainLayout"></CodeBlock>
+        Users can now sign in, we can confirm this by starting up the application and testing it. <br>
+        The project so start without any errors and in the top right you should see a link saying sign in.
+        <MudText> <img src="Images/ProjectHomepage.png" alt="Our project home page"></MudText>
+        After clicking sign In you should be redirect to okta login
+        <MudText><img src="Images/ProjectOktaLogIN.png" alt="okta log page"></MudText>
+        After signing in you shoul now see the name of the user that signed in the top left. <br>
+        This means that Authentication is full set up and if you wanted you could you Microsoft's Default Authorize view
+        <MudText Style="margin-top: 10px" Typo="Typo.h4">Using NameBasedAuthorizeViewComponent</MudText>
+        <hr style="width: 60%">
+        Now that we got Authentication set we can start to use NameBasedAuthorizeViewComponent but this does recuire a bit more set up, We need get Okta to send us a logged in users
+        roles and we need to Impenment INameBasedAuthorizationHelper which used to get the roles associated to a component. 
+        <MudText Style="margin-top: 10px" Typo="Typo.h6">Getting Okta to send us a users Roles</MudText>
+        <hr style="width: 40%">
+        Okta does not have roles but it does have something very similiar groups, we can then get okta to send us the groups a user belongs to as roles. <br>
     </MudText>
 </MudPaper>
 
@@ -146,7 +187,7 @@
   },
   ""AllowedHosts"": ""*"",
   ""Okta"": {
-    ""Domain"": ""{yourOktaDomain}"",
+    ""Domain"": ""https://{yourOktaDomain}"",
     ""ClientId"": ""{yourClientId}}"",
     ""ClientSecret"": ""{yourClientSecret}""
   }
@@ -170,6 +211,103 @@
 ";
 
     string UseAuth = "app.UseRouting();\n \napp.UseAuthentication(); \napp.UseAuthorization();\n \napp.MapBlazorHub();";
+    
+    string AppRazor = @"
+ <CascadingAuthenticationState>  
+   <Router AppAssembly=""@typeof(App).Assembly"">
+        <Found Context=""routeData"">
+             <RouteView RouteData=""@routeData"" DefaultLayout=""@typeof(MainLayout)""/>
+             <FocusOnNavigate RouteData=""@routeData"" Selector=""h1""/>
+        </Found>
+        <NotFound>
+             <PageTitle>Not found</PageTitle>
+             <LayoutView Layout=""@typeof(MainLayout)"">
+             <p role=""alert"">Sorry, there's nothing at this address.</p>
+             </LayoutView>
+        </NotFound>
+   </Router>
+</CascadingAuthenticationState>  
+";
 
+    string Import = @"@using NameBasedAuthorizeViewComponent.Components";
+    
+    string LogingDisplay = 
+        @"<AuthorizeView>
+    <Authorized>
+        <a href=""#"">Hello, @context.User.Identity.Name!</a>
+        <a href=""Account/SignOut"">Sign out</a>
+    </Authorized>
+    <NotAuthorized>
+        <a href=""Account/SignIn"">Sign in</a>
+    </NotAuthorized>
+</AuthorizeView>
+";
 
+    string AccountController = 
+        @"[Route(""[controller]/[action]"")]
+public class AccountController : Controller
+{
+    public IActionResult SignIn([FromQuery] string returnUrl)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            return LocalRedirect(returnUrl ?? Url.Content(""~/""));
+        }
+
+        return Challenge(OktaDefaults.MvcAuthenticationScheme); 
+    }
+
+    public  async Task<IActionResult> SignOut([FromQuery]string returnUrl)
+    {
+        if (!User.Identity.IsAuthenticated)
+        {
+            return LocalRedirect(returnUrl ?? Url.Content(""~/""));
+        }
+
+        await HttpContext.SignOutAsync();
+
+        return LocalRedirect(returnUrl ?? Url.Content(""~/""));
+    }
+    
+    [HttpPost(""Logout"")]
+    [ValidateAntiForgeryToken]
+    public IActionResult PostLogout([FromQuery]string returnUrl)
+    {
+        returnUrl ??= Url.Content(""~/"");
+        returnUrl = Url.IsLocalUrl(returnUrl) ? returnUrl : Url.Content(""~/"");
+
+        if (User.Identity.IsAuthenticated)
+        {
+            HttpContext.SignOutAsync();
+        }
+
+        return LocalRedirect(returnUrl);
+    }
+}
+";
+    string AddMvc = "app.UseAuthorization();\n \napp.MapControllers();\n \napp.MapBlazorHub();";
+    
+    string MainLayout = 
+        @"@inherits LayoutComponentBase
+
+<PageTitle>NameBasedAuthorizedComponentExampleApp</PageTitle>
+
+<div class=""page"">
+    <div class=""sidebar"">
+        <NavMenu/>
+    </div>
+
+    <main>
+        <div class=""top-row px-4"">
+            <LoginDisplay />           <-------------------------------------------------
+            <a href=""https://docs.microsoft.com/aspnet/"" target=""_blank"">About</a>
+        </div>
+
+        <article class=""content px-4"">
+            @Body
+        </article>
+    </main>
+</div>
+";
+    
 }
