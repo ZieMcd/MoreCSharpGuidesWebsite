@@ -136,8 +136,9 @@
         The project so start without any errors and in the top right you should see a link saying sign in.
         <MudText> <img src="Images/ProjectHomepage.png" alt="Our project home page"></MudText>
         After clicking sign In you should be redirect to okta login
-        <MudText><img src="Images/ProjectOktaLogIN.png" alt="okta log page"></MudText>
-        After signing in you shoul now see the name of the user that signed in the top left. <br>
+        <MudText><img src="Images/ProjectOktaLogIN.png" alt="Okta log page"></MudText>
+        After signing in you should now see the name of the user that signed in the top left. <br>
+        <MudText><img src="Images/ProjectHomepageAfterLogin.png" alt="Our project home page after login"></MudText>
         This means that Authentication is full set up and if you wanted you could you Microsoft's Default Authorize view
         <MudText Style="margin-top: 10px" Typo="Typo.h4">Using NameBasedAuthorizeViewComponent</MudText>
         <hr style="width: 60%">
@@ -146,6 +147,10 @@
         <MudText Style="margin-top: 10px" Typo="Typo.h6">Getting Okta to send us a users Roles</MudText>
         <hr style="width: 40%">
         Okta does not have roles but it does have something very similiar groups, we can then get okta to send us the groups a user belongs to as roles. <br>
+        Before we can turn okta groups into roles we need to make some groups in okta and assign them to users. Head back to the okta dashboard Directory->Groups and click add Group
+        <MudText><img src="Images/OktaGroups.PNG" alt="Okta adding group"></MudText>
+        Create two groups, Admin and SuperAdmin
+        <MudText><img src="Images/OktaAddAdminGroup.PNG" alt="Okta creat add Admin group"> <img src="Images/OktaAddSuperAdminGroup.PNG" alt="Okta creat add SuperAdmin group"></MudText>
     </MudText>
 </MudPaper>
 
