@@ -165,7 +165,7 @@
         <MudText><img src="Images/OktaAPI.PNG" alt="Okta API"></MudText>
         There should button called <i>Add Claim</i>
         <MudText><img src="Images/OktaAddClaim.PNG" alt="Okta add claim button"></MudText>
-        Now we can add the roles claim with the following values, Name = roles, Include in token type = ID Token : Always, Value type = Groups, Filter = Starts with : .*,
+        Now we can add the roles claim with the following values, Name = roles, Include in token type = ID Token : Always, Value type = Groups, Filter = Matches regex : .*,
         Include in  = Any scope or just copy from the below image.
         <MudText><img src="Images/OktaAddClaimFrom.PNG" alt="Okta add claim form"></MudText>
         Once you click create we have added a claim called roles!
@@ -205,6 +205,10 @@
         <MudText Style="margin-top: 10px" Typo="Typo.h6">Adding NameBasedAuthorizeView to pipe line</MudText>
         Now you need to add NameBasedAuthorizeComponent in program.cs passing in the instance of INameBaseAuthorizationHelper that you created
         <CodeBlock CodeAsString="builder.Services.AddNameBasedAuthorizeComponent<NameBasedAuthorizationHelper>();"></CodeBlock>
+        <MudText Style="margin-top: 10px" Typo="Typo.h6">Creating a demo page</MudText>
+        Let create a demo page to make sure everything is working. In Pages flolder of your project create a blazor page by creating a file called DemoPage.razor in 
+        this page we can use the NameBasedAuthorizeViewComponent.
+        <CodeBlock CodeAsString="@DemoPage"></CodeBlock>
     </MudText>
 </MudPaper>
 
@@ -264,7 +268,7 @@
         OktaDomain = builder.Configuration[""Okta:Domain""],
         ClientId = builder.Configuration[""Okta:ClientId""],
         ClientSecret = builder.Configuration[""Okta:ClientSecret""],
-        Scope = new List<string> {""openid"", ""profile"", ""email""},
+        Scope = new List<string> {""openid"", ""profile"", ""email"" , ""groups""},
     });
 
 ";
@@ -435,4 +439,27 @@ public interface INameBasedAuthorizationHelper
 
     public readonly record struct NavRoleItem(string Role, string UrlOrName);
     ";
+    
+    string DemoPage = 
+        @"@page ""/DemoPage""
+
+<NameBasedAuthorizeView ComponentAuthName=""AdminComponent"">
+    <Authorized>
+        <div class=""card text-white bg-success  mb-3"" style=""max-width: 18rem;"">
+            <div class=""card-header"">Authorized</div>
+            <div class=""card-body"">
+                <p class=""card-text"">You are Authorized to view Admin Component</p>
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class=""card text-white bg-danger  mb-3"" style=""max-width: 18rem;"">
+            <div class=""card-header"">UnAuthorized</div>
+            <div class=""card-body"">
+                <p class=""card-text"">You are Not Authorized to view Admin Component</p>
+            </div>
+        </div>
+    </NotAuthorized>
+</NameBasedAuthorizeView>
+";
 }
