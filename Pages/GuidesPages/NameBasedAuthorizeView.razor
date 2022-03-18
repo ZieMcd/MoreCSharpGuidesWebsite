@@ -147,10 +147,29 @@
         <MudText Style="margin-top: 10px" Typo="Typo.h6">Getting Okta to send us a users Roles</MudText>
         <hr style="width: 40%">
         Okta does not have roles but it does have something very similiar groups, we can then get okta to send us the groups a user belongs to as roles. <br>
+        <MudText Style="margin-top: 10px" Typo="Typo.h6">Created Okta groups and assign user to a group</MudText>
         Before we can turn okta groups into roles we need to make some groups in okta and assign them to users. Head back to the okta dashboard Directory->Groups and click add Group
         <MudText><img src="Images/OktaGroups.PNG" alt="Okta adding group"></MudText>
         Create two groups, Admin and SuperAdmin
         <MudText><img src="Images/OktaAddAdminGroup.PNG" alt="Okta creat add Admin group"> <img src="Images/OktaAddSuperAdminGroup.PNG" alt="Okta creat add SuperAdmin group"></MudText>
+        After Okta groups are created select the Admin group.
+        <MudText><img src="Images/OktaSelectGroup.PNG" alt="Okta select admin group"></MudText>
+        Click the Assign People button
+        <MudText><img src="Images/OktaSelectedGroup.PNG" alt="Okta assign people button"></MudText>
+        Select the user you want to add to the admin group and click save
+        <MudText><img src="Images/OktaAssignGroupToPerson.PNG" alt="Okta assigning group to person"></MudText>
+        <MudText Style="margin-top: 10px" Typo="Typo.h6">Turn Okta group into roles for our application</MudText>
+        I don't want to go into to much detail about why we need to do this but bascially in dotnet authetication a user shuold/could have roles and it gets the roles from
+        the idetity provider in form of a claim and that cliam has to be a roles claim. Luckly in Okta we can add a claim, call it roles and add the Okta groups to it. <br>
+        To get started go back to Okta dashbaord Security->API and there should already be one called <i>default</i> click it. 
+        <MudText><img src="Images/OktaAPI.PNG" alt="Okta API"></MudText>
+        There should button called <i>Add Claim</i>
+        <MudText><img src="Images/OktaAddClaim.PNG" alt="Okta add claim button"></MudText>
+        Now we can add the roles claim with the following values, Name = roles, Include in token type = ID Token : Always, Value type = Groups, Filter = Starts with : .*,
+        Include in  = Any scope or just copy from the below image.
+        <MudText><img src="Images/OktaAddClaimFrom.PNG" alt="Okta add claim form"></MudText>
+        Once you click create we have added a claim called roles!
+       
     </MudText>
 </MudPaper>
 
