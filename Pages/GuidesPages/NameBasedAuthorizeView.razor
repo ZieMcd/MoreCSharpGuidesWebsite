@@ -169,7 +169,42 @@
         Include in  = Any scope or just copy from the below image.
         <MudText><img src="Images/OktaAddClaimFrom.PNG" alt="Okta add claim form"></MudText>
         Once you click create we have added a claim called roles!
-       
+        <MudText Style="margin-top: 10px" Typo="Typo.h4">Using NameBasedAuthorizeViewComponent</MudText>
+        <hr style="width: 60%">
+        Now Okta is fully set up for our needs and we will need to go there dashbaord for the rest of this guide and the rest of the guide will be about how to use
+        the NameBasedAuthorizeViewComponent nuget.
+        <MudText Style="margin-top: 10px" Typo="Typo.h6">Installation</MudText>
+        We are going to use a dotnet .NET CLI command to do so
+        <CodeBlock CodeAsString="dotnet add package Ziemcd.Authorization.NameBasedAuthorizeViewComponent"></CodeBlock>
+        Or you could use PMC:
+        <CodeBlock CodeAsString=" Install-Package Ziemcd.Authorization.NameBasedAuthorizeViewComponent "></CodeBlock>
+        You also need to add NameBasedAuthorizeViewComponent.Components to _Imports.cs
+        <CodeBlock CodeAsString="@import"></CodeBlock>
+        <MudText Style="margin-top: 10px" Typo="Typo.h6">Implementing INameBasedAuthorizationHelper</MudText>
+        Now comes the most imporant bit Implementing INameBasedAuthorizationHelper. Before I show you the INameBasedAuthorizationHelper interface I want to show you the 
+        NameBasedAuthorizeViewComponent in Action.
+        <CodeBlock CodeAsString="@NameComponent"></CodeBlock> 
+        As you can see NameBasedAuthorizeView is very similar to Microsoft's AuthorizeView but you pass in a parameter <i>ComponentAuthName</i> this will be use in our 
+        implemtation of INameBasedAuthorizationHelper.
+        <CodeBlock CodeAsString="@INameBasedAuthorizationHelper"></CodeBlock>
+        As you can see this Interface has two Methods <br>
+        <b>GetRolesForComponent</b> <br>
+        If you do path in a value for the parameter ComponentAuthName this method gets called and the parameter you passed into the component will get passed into this
+        method. This method must return comma delimited list of roles that are allowed to access the component  e.g. "Admin","CEO","Everyone" <br>
+        <b>GetRolesFromRoute</b> <br>
+        GetRolesFromRoute is a fallback method, when ComponentAuthName is not passed to NameBasedAuthorizeView thus the route of the component is passed to method 
+        e.g. https://localhost:7082/counter.When Implementing this I recommend injecting Microsoft.AspNetCore.Components.NavigationManger and using 
+        .ToBaseRelativePath(String) to get the relative pass. It must also return comma delimited list of roles that are allowed to access the component.
+        <br><br>
+        Alright now we know what INameBasedAuthorizationHelper is lets create our own implemetation. Create a folder called Helpers and add a class called 
+        NameBasedAuthorizationHelper. Copy past the below for that class.
+        <CodeBlock CodeAsString="@NameBasedAuthorizationHelper"></CodeBlock>
+        As we can this class implements INameBasedAuthorizationHelper and it's two methods. It create a List of type NavRoleItem which is a record type we create
+        at the bottom of the file. This list acts as a fake table that stores A component and the roles that has access to it. E.g the Admin role has access to 
+        the AdminComponent. Then the two methods querie against that fake table to get the roles for a certain component.
+        <MudText Style="margin-top: 10px" Typo="Typo.h6">Adding NameBasedAuthorizeView to pipe line</MudText>
+        Now you need to add NameBasedAuthorizeComponent in program.cs passing in the instance of INameBaseAuthorizationHelper that you created
+        <CodeBlock CodeAsString="builder.Services.AddNameBasedAuthorizeComponent<NameBasedAuthorizationHelper>();"></CodeBlock>
     </MudText>
 </MudPaper>
 
@@ -333,5 +368,71 @@ public class AccountController : Controller
     </main>
 </div>
 ";
+
+    string import = "@using NameBasedAuthorizeViewComponent.Components";
     
+    string NameComponent = 
+        @"<NameBasedAuthorizeView ComponentAuthName=""AdminComponent"">
+    <Authorized>
+     <div class=""card text-white bg-success  mb-3"" style=""max-width: 18rem;"">
+        <div class=""card-header"">Authorized</div>
+        <div class=""card-body"">
+           <p class=""card-text"">You are Authorized to view Admin Component</p>
+        </div>
+     </div>
+   </Authorized>
+   <NotAuthorized>
+   <div class=""card text-white bg-danger  mb-3"" style=""max-width: 18rem;"">
+      <div class=""card-header"">UnAuthorized</div>
+         <div class=""card-body"">
+            <p class=""card-text"">You are Not Authorized to view Admin Component</p>
+         </div>
+      </div>
+   </NotAuthorized>
+ </NameBasedAuthorizeView>
+";
+
+    string INameBasedAuthorizationHelper = @"
+namespace NameBasedAuthorizeViewComponent.Interfaces;
+
+public interface INameBasedAuthorizationHelper
+{
+    string GetRolesForComponent(string componentName);
+
+    string GetRolesFromRoute(string componentRoute);
+}
+";
+    string NameBasedAuthorizationHelper = @"public class NameBasedAuthorizationHelper : INameBasedAuthorizationHelper
+    {
+        private readonly List<NavRoleItem> _fakeRoleNavTable;
+        private readonly NavigationManager _navigationManager;
+        public NameBasedAuthorizationHelper(NavigationManager navigationManager)
+        {
+            _navigationManager = navigationManager;
+
+            _fakeRoleNavTable = new List<NavRoleItem>
+            {
+                new(""Admin"", ""AdminComponent""),
+                new(""Everyone"", ""EveryoneComponent""),
+            };
+        }
+
+        public string GetRolesForComponent(string componentName)
+        {
+            var roles = _fakeRoleNavTable.Where(item => item.UrlOrName.Equals(componentName)).Select(item => item.Role);
+            return string.Join("", "", roles);
+        }
+
+        public string GetRolesFromRoute(string componentRoute)
+        {
+            var relativeUrl = _navigationManager.ToBaseRelativePath(componentRoute);
+            var roles = _fakeRoleNavTable.Where(item => item.UrlOrName.Equals(relativeUrl)).Select(item => item.Role);
+            if (!roles.Any())
+                return null;
+            return string.Join("", "", roles);
+        }
+    }
+
+    public readonly record struct NavRoleItem(string Role, string UrlOrName);
+    ";
 }
