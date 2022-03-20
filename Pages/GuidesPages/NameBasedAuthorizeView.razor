@@ -5,7 +5,7 @@
 
 <MudText Typo="Typo.body1" Style="margin: 30px">
 Dotnet Blazor applications are unlike other dotnet web applications mainly because it is component based which presents
-an interesting way to handle Authorization. In a traditional mvc application you could create you own implementation of
+an interesting way to handle Authorization. In a traditional mvc application you could create your own implementation of
 Microsoft's
 <MudLink href="https://docs.microsoft.com/en-us/dotnet/api/system.web.mvc.authorizeattribute?view=aspnet-mvc-5.2" Target="_blank">
     Authorize Attribute
@@ -27,7 +27,7 @@ page I don't think this utilizes Blazor's component based nature very well, and 
 <br>
 The AuthorizeView component is great. It allows for so much control over what users can and can not see. I will give a small example to demonstrate.
 <CodeBlock CodeAsString="@AuthorizedView"></CodeBlock>
-In the code above if the user is Authorized he will see what ever is between &lt;Authorized&gt; tags, if the user is not Authorized he will see what ever is
+In the code above if the user is Authorized he will see whatever is between &lt;Authorized&gt; tags, if the user is not Authorized he will see whatever is
 between the &lt;NotAuthorized&gt;. <br>
 This already gives so much power over what the user will see if he is not Authorized, every Component you have can have its own view if the user is not authorized.
 You can extend this power by using role-based authorization with the Roles parameter:
@@ -96,11 +96,11 @@ and you should see the application you made earlier, click on it.
 <MudText>
     <img src="Images/OktaFindYourApp.png" alt="Where to find your okta app">
 </MudText>
-From your Okta we need Client ID, Client secret and Okta domain. We are going to put this in the appsettings.josn, so we can use this in our project as configuration.
+From your Okta we need Client ID, Client secret and Okta domain. We are going to put this in the <appsettings class="jso"></appsettings>n, so we can use this in our project as configuration.
 <MudText>
     <img src="Images/OktaWhatSettingsYouNeed.png" alt="What settings you need to copy from okta app">
 </MudText>
-And this what your app settings should look like.
+And this is what your app settings should look like.
 <CodeBlock CodeAsString="@AppSetting"></CodeBlock>
 Now we can configure authentication using Okta in Program.cs, under <i>var builder = WebApplication.CreateBuilder(args);</i> add
 <CodeBlock CodeAsString="@AddAuth"></CodeBlock>
@@ -118,11 +118,11 @@ Also add <i>app.MapControllers();</i> to program.cs between <i>app.UseAuthorizat
 Before we use this controller we need to change some settings in your Okta app so go to your okta app like we did earlier and edit the General Settings. You should
 see Sign-in redirect URIs and Sign-out redirect URIs under the heading LOGIN. Sign-in redirect URIs must be equal to
 <i>{Your projects base url}/authorization-code/callback</i>, Sign-out redirect URIs must be equal to <i>{Your projects base url}/Account/PostLogout</i>. you can
-find your projects base url in Properties/launchSetting.json be sure to the https one.
+find your project's base url in Properties/launchSetting.json be sure to the https one.
 <MudText>
     <img src="Images/OktaChangingUrlsInOkta.png" alt="Where to change okta redirect urls">
 </MudText>
-Before we log in with Okta in our project we to create and assign user to Okta app <br>
+Before we log in with Okta in our project we to create and assign a user to our Okta app <br>
 In the Okta dashboard go to Directory->People. There should already be one person there if not create one by clicking Add person. Once you have created a person
 click on them.
 <MudText>
@@ -181,7 +181,7 @@ Select the user you want to add to the admin group and click save
     <img src="Images/OktaAssignGroupToPerson.PNG" alt="Okta assigning group to person">
 </MudText>
 <MudText Style="margin-top: 10px" Typo="Typo.h6">Turn Okta group into roles for our application</MudText>
-I don't want to go into too much detail about why we need to do this but basically in dotnet authentication a user should/could have roles and it gets the roles from
+I don't want to go into too much detail about why we need to do this but basically,  in dotnet authentication a user should/could have roles and it gets the roles from
 the identity provider in form of a claim and that claim has to be a roles claim. Luckily in Okta we can add a claim, call it roles and add the Okta groups to it. <br>
 To get started go back to Okta dashboard Security->API and there should already be one called <i>default</i> click it.
 <MudText>
@@ -192,7 +192,7 @@ There should button called <i>Add Claim</i>
     <img src="Images/OktaAddClaim.PNG" alt="Okta add claim button">
 </MudText>
 Now we can add the roles claim with the following values, Name = roles, Include in token type = ID Token : Always, Value type = Groups, Filter = Matches regex : .*,
-Include in = Any scope or just copy from the below image.
+Include in = Any scope or just copy from the image below.
 <MudText>
     <img src="Images/OktaAddClaimFrom.PNG" alt="Okta add claim form">
 </MudText>
@@ -214,25 +214,25 @@ You also need to add NameBasedAuthorizeViewComponent.Components to _Imports.cs
 Now comes the most important bit Implementing INameBasedAuthorizationHelper. Before I show you the INameBasedAuthorizationHelper interface I want to show you the
 NameBasedAuthorizeViewComponent in Action.
 <CodeBlock CodeAsString="@NameComponent"></CodeBlock>
-As you can see NameBasedAuthorizeView is very similar to Microsoft's AuthorizeView but you pass in a parameter <i>ComponentAuthName</i> this will be use in our
+As you can see NameBasedAuthorizeView is very similar to Microsoft's AuthorizeView but you pass in a parameter <i>ComponentAuthName</i> this will be used in our
 implementation of INameBasedAuthorizationHelper.
 <CodeBlock CodeAsString="@INameBasedAuthorizationHelper"></CodeBlock>
 As you can see this Interface has two Methods <br>
 <b>GetRolesForComponent</b> <br>
 If you do pass in a value for the parameter ComponentAuthName this method gets called and the parameter you passed into the component will get passed into this
-method. This method must return comma delimited list of roles that are allowed to access the component e.g. "Admin","CEO","Everyone" <br>
+method. This method must a return comma delimited list of roles that are allowed to access the component e.g. "Admin","CEO","Everyone" <br>
 <b>GetRolesFromRoute</b> <br>
-GetRolesFromRoute is a fallback method, when ComponentAuthName is not passed to NameBasedAuthorizeView thus the route of the component is passed to method
-e.g. https://localhost:7082/counter.When Implementing this I recommend injecting Microsoft.AspNetCore.Components.NavigationManger and using
-.ToBaseRelativePath(String) to get the relative pass. It must also return a comma delimited list of roles that are allowed to access the component.
+GetRolesFromRoute is a fallback method, when ComponentAuthName is not passed to NameBasedAuthorizeView thus the route of the component is passed the to method
+e.g. https://localhost:7082/counter.When Implementing this I recommend injecting Microsoft.AspNetCore.Components.NavigationManger and using .ToBaseRelativePath(String) 
+to get the relative pass. It must also return a comma delimited list of roles that are allowed to access the component.
 <br><br>
-Alright now we know what INameBasedAuthorizationHelper, is let's create our own implementation. Create a folder called Helpers and add a class called
+Alright, now we know what INameBasedAuthorizationHelper, is let's create our own implementation. Create a folder called Helpers and add a class called
 NameBasedAuthorizationHelper. Copy and paste the below for that class.
 <CodeBlock CodeAsString="@NameBasedAuthorizationHelper"></CodeBlock>
 As we can see, this class implements INameBasedAuthorizationHelper and its two methods. It creates a List of type NavRoleItem which is a record type we create
-at the bottom of the file. This list acts as a fake table that stores a component and the roles that has access to it. E.g. the Admin role has access to
+at the bottom of the file. This list acts as a fake table that stores a component and the roles that have access to it. E.g. the Admin role has access to
 the AdminComponent. Then the two methods query against that fake table to get the roles for a certain component.
-<MudText Style="margin-top: 10px" Typo="Typo.h6">Adding NameBasedAuthorizeView to pipe line</MudText>
+<MudText Style="margin-top: 10px" Typo="Typo.h6">Adding NameBasedAuthorizeView to pipeline</MudText>
 Now you need to add NameBasedAuthorizeComponent in program.cs passing in the instance of INameBaseAuthorizationHelper that you created
 <CodeBlock CodeAsString="builder.Services.AddNameBasedAuthorizeComponent<NameBasedAuthorizationHelper>();"></CodeBlock>
 <MudText Style="margin-top: 10px" Typo="Typo.h6">Creating a demo page</MudText>
