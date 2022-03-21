@@ -1,35 +1,75 @@
 @page "/guides"
 
-<MudGrid Justify="Justify.Center">
-    <MudItem xs="6" Class="mud-width-full">
-        <MudCard Outlined="true">
+<MudGrid>
+    <MudItem xs="12">
+        <MudText Typo="Typo.h4" Align="Align.Center">Guides</MudText>
+        <MudDivider/>
+        <MudText Typo="Typo.body1">
+            I have written a few guides on various topics. Some guides will be related to nuget packages I have created others
+            will be about things/topics/solutions that I have found to be useful and think others will to.
+        </MudText>
+    </MudItem>
+    <MudItem xs="12">
+        <MudText Typo="Typo.h5" Align="Align.Left">Nuget guides</MudText>
+        <MudText Typo="Typo.body1">
+            Theese are guides I have written about the nuget packages I have made. They don't only focus on the nuget themselfs but
+            also the surrounding technologies, i.e. a guide about NameBasedAuthorizeViewComponent nuget will explain how to use it but
+            also walk through the process of getting Authentication working in Blazor. NameBasedAuthorizeViewComponent relies on
+            Authentication.
+        </MudText>
+    </MudItem>
+    <MudItem xs="12" sm="6" Class="mud-width-full">
+        <MudCard>
             <MudCardContent>
                 <MudText Typo="Typo.h6">Blazor Authentication & Authorization with Okta and NameBasedAuthorizeViewComponent</MudText>
                 <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
-                <MudText Typo="Typo.body2">A guide to setting up Authentication & Authorization in blazor using Okta as
-                    Identity Provider and setting up the NameBasedAuthorizeViewComponent nuget </MudText>
+                <MudText Typo="Typo.body2">
+                    A guide to setting up Authentication & Authorization in blazor using Okta as
+                    Identity Provider and setting up the NameBasedAuthorizeViewComponent nuget
+                </MudText>
             </MudCardContent>
-            <MudCardActions>
+            <MudCardActions Style="flex-direction: row-reverse;">
                 <MudButton Variant="Variant.Text" Color="Color.Primary" Link="NameBasedAuthorizeView">Read Guide</MudButton>
                 <MudButton Variant="Variant.Text" Color="Color.Primary" Link="https://github.com/ZieMcd/NameBasedAuthenticationComponent" Target="_blank">GitHud</MudButton>
             </MudCardActions>
         </MudCard>
-    </MudItem> 
-    <MudItem xs="6" Class="mud-width-full">
-        <MudCard Outlined="true">
+    </MudItem>
+    <MudItem xs="12" sm="6" Class="mud-width-full">
+        <MudCard>
             <MudCardContent>
-                <MudText Typo="Typo.h6">Using Hashicorp secrets as custom configuration provider in asp.net projects</MudText>
+                <MudText Typo="Typo.h6">Using Hashicorp secrets as custom configuration provider in asp.net projects with HashiCorpAsConfiguration</MudText>
                 <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
-                <MudText Typo="Typo.body2">A guide</MudText>
+                <MudText Typo="Typo.body2">
+                    A guide to set up an instance of Hashicorp vault to store secrets and using HashiCorpAsConfiguration
+                    nuget to access them in your asp.net project as Configuration
+                </MudText>
             </MudCardContent>
-            <MudCardActions>
+            <MudCardActions Style="flex-direction: row-reverse;">
                 <MudButton Variant="Variant.Text" Color="Color.Primary" Link="HashiCorpAsConfiguration">Read Guide</MudButton>
                 <MudButton Variant="Variant.Text" Color="Color.Primary" Link="https://github.com/ZieMcd/HashiCorpVaultAsConfiguration" Target="_blank">GitHud</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+    <MudItem xs="12">
+        <MudText Typo="Typo.h5" Align="Align.Left">Other guides</MudText>
+        <MudText Typo="Typo.body1">
+            So other guides about things I think are worth a share.
+        </MudText>
+    </MudItem>
+    <MudItem xs="12" sm="6" Class="mud-width-full">
+        <MudCard>
+            <MudCardContent>
+                <MudText Typo="Typo.h6">Using Kubernetes Cron Jobs and Dotnet worker services to do scheduled background tasks</MudText>
+                <MudDivider DividerType="DividerType.Middle" Class="my-6"/>
+                <MudText Typo="Typo.body2">Working Progress</MudText>
+            </MudCardContent>
+            <MudCardActions Style="flex-direction: row-reverse;">
+                <MudButton Variant="Variant.Text" Color="Color.Primary" Link="KubernetesCronJobs">Read Guide</MudButton>
             </MudCardActions>
         </MudCard>
     </MudItem>
 </MudGrid>
 
 @code {
-    
+
 }
