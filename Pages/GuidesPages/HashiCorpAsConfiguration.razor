@@ -2,9 +2,16 @@
 <MudPaper Style="background: #f0f8ff; padding-top: 20px">
     <MudText Typo="Typo.h4" Align="Align.Center">Using Hashicorp secrets as custom configuration provider in asp.net projects with HashiCorpAsConfiguration</MudText>
     <hr style="width:75%; margin: auto; ">
-    Hashicorp vault is allows for a secure way to sensitive data.
+    <MudText Typo="Typo.body1" Style="margin: 30px">
+        <MudLink Href="https://www.vaultproject.io/" Target="_blank">Hashicorp Vault</MudLink> is an identity-based secrets and encryption 
+        management system. It is great place for you to store secret configuration for your application. I have created a nuget that will 
+        retrive the secrets in your vault and them to your application as a <MudLink Target="_blank" Href="https://docs.microsoft.com/en-us/dotnet/core/extensions/configuration#configuration-providers">
+            Configuration provider.
+        </MudLink> 
+        This guide will go through the proccess <b>Setting up vault</b>
+    </MudText>
 </MudPaper>
 
 @code {
-    
+
 }
