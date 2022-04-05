@@ -9,9 +9,9 @@
             Configuration provider.
         </MudLink> 
         This guide will go through the process <b>setting up vault</b> and configuring it your dotnet project from start to finish. 
-        <MudText Style="margin-top: 10px" Typo="Typo.h4">Setting up a Vault Instance</MudText>
+        <MudText Style="margin-top: 10px" Typo="Typo.h4">Setting up a Vault server</MudText>
         <hr style="width: 60%">
-        We going to install vault and set up a local instance of vault. I will be using windows for guide but you can install vault on Mac and
+        We going to install vault and set up a local vault server. I will be using windows for guide but you can install vault on Mac and
         Linux. For more Information on installing vault I recommend checking out <MudLink Target="_blank" Href="https://learn.hashicorp.com/tutorials/vault/getting-started-install?in=vault/getting-started">
         learn.hashicorp.com</MudLink>.
         <MudText Style="margin-top: 10px" Typo="Typo.h6">Download vault</MudText>
@@ -43,8 +43,10 @@
         In this command we add secret with key secret-from-vault and value hello to the path of secret/demo <br>
         If you run the command above you should get 
         <CodeBlock CodeAsString="@addedSecret"></CodeBlock>
-        To read secrets from a path run
-        <CodeBlock CodeAsString="vault kv get secret/demo"></CodeBlock>
+        To read secrets from a path run <i style="background-color: #ffffffff;">vault kv get secret/demo</i>
+        <CodeBlock CodeAsString="@vaultGet"></CodeBlock>
+        <MudText Style="margin-top: 10px" Typo="Typo.h4">Creating our project</MudText>
+        <hr style="width: 60%">
     </MudText>
 </MudPaper>
 
@@ -144,5 +146,26 @@ custom_metadata    <nil>
 deletion_time      n/a
 destroyed          false
 version            1
+";
+
+string vaultGet = @"
+$ vault kv get secret/demo
+
+== Secret Path ==
+secret/data/demo
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2022-03-31T17:51:28.8667824Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            4
+
+========== Data ==========
+Key                  Value
+---                  -----
+secret-from-vault    hello
 ";
 }
