@@ -1,9 +1,15 @@
 @page "/KubernetesCronJobs"
-<PageTitle>KubernetesCronJobs</PageTitle>
+<PageTitle>More C# Guides: KubernetesCronJobs</PageTitle>
 <MudPaper Style="background: #f0f8ff; padding-top: 20px">
     <MudText Typo="Typo.h4" Align="Align.Center">  Using Kubernetes Cron Jobs and Dotnet worker services to scheduled background tasks</MudText>
     <hr style="width:75%; margin: auto; ">
     <MudText Typo="Typo.body1" Style="margin: 30px">
+        There times as developer that you want to run code periodically. There are few ways todo this in C#. There are two 
+        popular libraries, <MudLink Href="https://www.quartz-scheduler.net/" Target="_blank">Quartz</MudLink> and 
+        <MudLink Href="https://www.hangfire.io/" Target="_blank">Hangfire</MudLink> that allow you schedule jobs. Both of these
+        libraries suffer from the same problem. Say if you two jobs (the code you want to run periodically) each in there own library. 
+        Either you Hangfire or Quartz project has to reference both of those libraries.
+
     </MudText>
 </MudPaper>
 
