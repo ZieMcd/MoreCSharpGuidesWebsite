@@ -8,8 +8,22 @@
         popular libraries, <MudLink Href="https://www.quartz-scheduler.net/" Target="_blank">Quartz</MudLink> and 
         <MudLink Href="https://www.hangfire.io/" Target="_blank">Hangfire</MudLink> that allow you schedule jobs. Both of these
         libraries suffer from the same problem. Say if you two jobs (the code you want to run periodically) each in there own library. 
-        Either you Hangfire or Quartz project has to reference both of those libraries.
-
+        Either your Hangfire or Quartz project has to reference both of those libraries. So if you want add or edit a job you have to take 
+        your whole scheduler project down which means no jobs run while you are doing a deployment. In summary all your jobs are coupled to
+        the scheduler project that uses either Hangfire or Quartz. <br>
+        So that is why I think the best way to schedule the running of code is with <MudLink Href="https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/" 
+        Target="_blank" >KubernetesCronJobs</MudLink>. KubernetesCronJobs will start a docker container on repeating schedule. I like to start worker service containers
+        because worker services have quite a lot of built in functionality in comparison to something like console app. They are also to shut down gracefully when the 
+        job is complete.
+        <MudText Style="margin-top: 10px" Typo="Typo.h6">prerequisites</MudText>
+        <MudList Dense="true">
+            <MudListItem>You already have docker installed and know the basics</MudListItem>
+            <MudListItem>You have Kubernetes cluster to use and know how to use kubernetes. If not I recommend
+                <MudLink Href="https://minikube.sigs.k8s.io/docs/start/" Target="_blank">minikube</MudLink>
+            </MudListItem>
+        </MudList> 
+        <MudText Style="margin-top: 10px" Typo="Typo.h4">Creating our Job</MudText>
+        <hr style="width: 60%">
     </MudText>
 </MudPaper>
 
