@@ -1,7 +1,7 @@
 @page "/NameBasedAuthorizeView"
 <PageTitle>More C# Guides: Blazorserver side Authentication & Authorization with Okta and NameBasedAuthorizeViewComponent</PageTitle>
 <MudPaper Style="background: #f0f8ff; padding-top: 20px">
-<MudText Typo="Typo.h4" Align="Align.Center">Blazorserver side Authentication & Authorization with Okta and NameBasedAuthorizeViewComponent</MudText>
+<MudText Typo="Typo.h4" Align="Align.Center" Style="overflow: scroll;">Blazorserver side Authentication & Authorization with Okta and NameBasedAuthorizeViewComponent</MudText>
 <hr style="width:75%; margin: auto; ">
 
 <MudText Typo="Typo.body1" Style="margin: 30px">
@@ -153,7 +153,7 @@ After signing in you should now see the name of the user that signed in the top 
     <img src="Images/ProjectHomepageAfterLogin.png" alt="Our project home page after login">
 </MudText>
 This means that Authentication is full set up and if you wanted you could you Microsoft's Default Authorize view
-<MudText Style="margin-top: 10px" Typo="Typo.h4">Using NameBasedAuthorizeViewComponent</MudText>
+<MudText Style="margin-top: 10px" Typo="Typo.h4"  Style="overflow: scroll;">Using NameBasedAuthorizeViewComponent</MudText>
 <hr style="width: 60%">
 Now that we got Authentication set we can start to use NameBasedAuthorizeViewComponent but this does require a bit more set up, We need to get Okta to send us 
 a logged-in user's roles, and we need to implement INameBasedAuthorizationHelper which used to get the roles associated to a component.
@@ -200,7 +200,7 @@ Include in = Any scope or just copy from the image below.
 Once you click create we have added a claim called roles! <br>
 Also before continuing we need to alter Domain in <i>appsetting.json</i> by appending /oauth2/default to the end of it.
 <CodeBlock CodeAsString="@NewAppSetting"></CodeBlock>
-<MudText Style="margin-top: 10px" Typo="Typo.h4">Using NameBasedAuthorizeViewComponent</MudText>
+<MudText Style="margin-top: 10px" Typo="Typo.h4"  Style="overflow: scroll;">Using NameBasedAuthorizeViewComponent</MudText>
 <hr style="width: 60%">
 Now Okta is fully set up for our needs and we will need to go there dashboard for the rest of this guide and the rest of the guide will be about how to use
 the NameBasedAuthorizeViewComponent nuget.
