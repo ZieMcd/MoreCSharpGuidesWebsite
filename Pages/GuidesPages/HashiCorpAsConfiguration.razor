@@ -1,105 +1,155 @@
 @page "/HashiCorpAsConfiguration"
-<PageTitle>More C# Guides: HashiCorpAsConfiguration</PageTitle>  
+<PageTitle>More C# Guides: HashiCorpAsConfiguration</PageTitle>
 <MudPaper Style="background: #f0f8ff; padding-top: 20px">
-    <MudText Typo="Typo.h4" Align="Align.Center">Using Hashicorp secrets as custom configuration provider in asp.net projects with HashiCorpAsConfiguration</MudText>
+    <MudText Typo="Typo.h4" Align="Align.Center">Using Hashicorp secrets as custom configuration provider in asp.net
+        projects with HashiCorpAsConfiguration</MudText>
     <hr style="width:75%; margin: auto; ">
     <MudText Typo="Typo.body1" Style="margin: 30px">
-        <MudLink Href="https://www.vaultproject.io/" Target="_blank">Hashicorp Vault</MudLink> is an identity-based secrets and encryption 
-        management system. It is great place for you to store secret configuration for your application. I have created a nuget that will 
-        retrieve the secrets in your vault and them to your application as a <MudLink Target="_blank" Href="https://docs.microsoft.com/en-us/dotnet/core/extensions/configuration#configuration-providers">
+        <MudLink Href="https://www.vaultproject.io/" Target="_blank">Hashicorp Vault</MudLink> is an identity-based
+        secrets and encryption
+        management system. It is great place for you to store secret configuration for your application. I have created
+        a nuget that will
+        retrieve the secrets in your vault and them to your application as a <MudLink Target="_blank"
+            Href="https://docs.microsoft.com/en-us/dotnet/core/extensions/configuration#configuration-providers">
             Configuration provider.
-        </MudLink> 
-        This guide will go through the process <b>setting up vault</b> and configuring it your dotnet project from start to finish. 
+        </MudLink>
+        This guide will go through the process <b>setting up vault</b> and configuring it your dotnet project from start
+        to finish.
         <MudText Style="margin-top: 10px" Typo="Typo.h4">Setting up a Vault server</MudText>
         <hr style="width: 60%">
-        We going to install vault and set up a local vault server. I will be using windows for guide but you can install vault on Mac and
-        Linux. For more Information on installing vault I recommend checking out <MudLink Target="_blank" Href="https://learn.hashicorp.com/tutorials/vault/getting-started-install?in=vault/getting-started">
-        learn.hashicorp.com</MudLink>.
+        We going to install vault and set up a local vault server. I will be using windows for guide but you can install
+        vault on Mac and
+        Linux. For more Information on installing vault I recommend checking out <MudLink Target="_blank"
+            Href="https://learn.hashicorp.com/tutorials/vault/getting-started-install?in=vault/getting-started">
+            learn.hashicorp.com</MudLink>.
         <MudText Style="margin-top: 10px" Typo="Typo.h6">Download vault</MudText>
         <hr style="width: 40%">
-        Head over to <MudLink Href="https://www.vaultproject.io/downloads" Target="_blank">https://www.vaultproject.io/downloads</MudLink>
-        to download and install vault. To check if vault is installed type <i>vault</i> into your console and you should get a 
-        up put like so  
+        Head over to <MudLink Href="https://www.vaultproject.io/downloads" Target="_blank">
+            https://www.vaultproject.io/downloads</MudLink>
+        to download and install vault. To check if vault is installed type <i>vault</i> into your console and you should
+        get a
+        up put like so
         <CodeBlock CodeAsString="@vaultCommand"></CodeBlock>
         <MudText Style="margin-top: 10px" Typo="Typo.h6">Starting a vault server</MudText>
         <hr style="width: 40%">
-        We going start a vault dev server. A dev server is pre-configured great for testing and playing around locally. <br>
+        We going start a vault dev server. A dev server is pre-configured great for testing and playing around locally.
+        <br>
         To start the server run.
         <CodeBlock CodeAsString="$ vault server -dev"></CodeBlock>
         Output
         <CodeBlock CodeAsString="@vaultStart"></CodeBlock>
         Before we move on make sure to save the Unseal Key and Root Token that was part of the out put. <br>
-        Launch a new terminal session and run the <i style="background-color: #ffffffff;">$env:VAULT_ADDR=...</i> from the output above. <br>
+        Launch a new terminal session and run the <i style="background-color: #ffffffff;">$env:VAULT_ADDR=...</i> from
+        the output above. <br>
         To verify the server is running, run
         <CodeBlock CodeAsString="$ vault status"></CodeBlock>
         Your output should look like
         <CodeBlock CodeAsString="@vaultStatus"></CodeBlock>
         <MudText Style="margin-top: 10px" Typo="Typo.h6">Adding a secret to vault</MudText>
         <hr style="width: 40%">
-        You can Add, Read and Delete secrets with the <i style="background-color: #ffffffff;">vault kv</i> command. There is acautlly a 
-        lot you can do with <i>vault kv</i> but is beyond the scope of this guide. If you ever need help with kv run 
+        You can Add, Read and Delete secrets with the <i style="background-color: #ffffffff;">vault kv</i> command.
+        There is acautlly a
+        lot you can do with <i>vault kv</i> but is beyond the scope of this guide. If you ever need help with kv run
         <i style="background-color: #ffffffff;">vault kv -help</i>. <br>
         To add a secret to vault run
         <CodeBlock CodeAsString="$ vault kv put secret/demo secret-from-vault=hello"></CodeBlock>
         In this command we add secret with key secret-from-vault and value hello to the path of secret/demo <br>
-        If you run the command above you should get 
+        If you run the command above you should get
         <CodeBlock CodeAsString="@addedSecret"></CodeBlock>
         To read secrets from a path run <i style="background-color: #ffffffff;">vault kv get secret/demo</i>
         <CodeBlock CodeAsString="@vaultGet"></CodeBlock>
         <MudText Style="margin-top: 10px" Typo="Typo.h4">Creating our project</MudText>
         <hr style="width: 60%">
+        <MudPaper>        
+           So this is where I am getting stuck. I have a sample project <MudLink Href="https://github.com/ZieMcd/HashiCorpVaultAsConfiguration/tree/master/samples/HashiCorpConfigurationExampleApp" Target="_blank">here</MudLink> 
+           except you don't need to add Mount Point in configuration. The Project connects to vault fine but does not return any of the 
+           secrets of a given path.
+        </MudPaper>
+        <MudOverlay @bind-Visible="isVisible" DarkBackground="true" AutoClose="false" />
+        <MudPopover Open="@isVisible" AnchorOrigin="@Origin.TopCenter" TransformOrigin="@Origin.CenterCenter">
+            <MudCard Outlined="true">
+
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">Unfortunately this Guide is incomplete </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudText Typo="Typo.body2">
+                        I am having a bit of trouble with this guide. <br>
+                        The setting up of vault part of this guide is complete but <br>
+                        I'm struggling to get the secrets into the dotnet application. <br>
+                        For now, I have left vault set up here and will try to finish the guide as <br>
+                        soon as possible.
+                    </MudText>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" OnClick="@(e => ToggleOverlay(false))" Color="Color.Primary">
+                        Continue</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudPopover>
+
     </MudText>
 </MudPaper>
 
 @code {
-string vaultCommand = @"
+    private bool isVisible = true;
+
+    public void ToggleOverlay(bool value)
+    {
+        isVisible = value;
+    }
+
+    string vaultCommand = @"
 $ vault
 
 Usage: vault <command> [args]
 
 Common commands:
-    read        Read data and retrieves secrets
-    write       Write data, configuration, and secrets
-    delete      Delete secrets and configuration
-    list        List data or secrets
-    login       Authenticate locally
-    agent       Start a Vault agent
-    server      Start a Vault server
-    status      Print seal and HA status
-    unwrap      Unwrap a wrapped secret
+read Read data and retrieves secrets
+write Write data, configuration, and secrets
+delete Delete secrets and configuration
+list List data or secrets
+login Authenticate locally
+agent Start a Vault agent
+server Start a Vault server
+status Print seal and HA status
+unwrap Unwrap a wrapped secret
 
 Other commands:
-    audit          Interact with audit devices
-    auth           Interact with auth methods
-    debug          Runs the debug command
-    kv             Interact with Vault's Key-Value storage
-    lease          Interact with leases
-    monitor        Stream log messages from a Vault server
-    namespace      Interact with namespaces
-    operator       Perform operator-specific tasks
-    path-help      Retrieve API help for paths
-    plugin         Interact with Vault plugins and catalog
-    policy         Interact with policies
-    print          Prints runtime configurations
-    secrets        Interact with secrets engines
-    ssh            Initiate an SSH session
-    token          Interact with tokens
+audit Interact with audit devices
+auth Interact with auth methods
+debug Runs the debug command
+kv Interact with Vault's Key-Value storage
+lease Interact with leases
+monitor Stream log messages from a Vault server
+namespace Interact with namespaces
+operator Perform operator-specific tasks
+path-help Retrieve API help for paths
+plugin Interact with Vault plugins and catalog
+policy Interact with policies
+print Prints runtime configurations
+secrets Interact with secrets engines
+ssh Initiate an SSH session
+token Interact with tokens
 ";
 
-string vaultStart = 
-@"==> Vault server configuration:
+    string vaultStart =
+    @"==> Vault server configuration:
 
-             Api Address: http://127.0.0.1:8200
-                     Cgo: disabled
-         Cluster Address: https://127.0.0.1:8201
-              Go Version: go1.17.7
-              Listener 1: tcp (addr: ""127.0.0.1:8200"", cluster address: ""127.0.0.1:8201"", max_request_duration: ""1m30s"", max_request_size: ""33554432"", tls: ""disabled"")
-               Log Level: info
-                   Mlock: supported: false, enabled: false
-           Recovery Mode: false
-                 Storage: inmem
-                 Version: Vault v1.10.0
-             Version Sha: 7738ec5d0d6f5bf94a809ee0f6ff0142cfa525a6
+Api Address: http://127.0.0.1:8200
+Cgo: disabled
+Cluster Address: https://127.0.0.1:8201
+Go Version: go1.17.7
+Listener 1: tcp (addr: ""127.0.0.1:8200"", cluster address: ""127.0.0.1:8201"", max_request_duration: ""1m30s"",
+max_request_size: ""33554432"", tls: ""disabled"")
+Log Level: info
+Mlock: supported: false, enabled: false
+Recovery Mode: false
+Storage: inmem
+Version: Vault v1.10.0
+Version Sha: 7738ec5d0d6f5bf94a809ee0f6ff0142cfa525a6
 
 ==> Vault server started! Log data will stream in below:
 
@@ -108,9 +158,9 @@ string vaultStart =
 You may need to set the following environment variable:
 
 PowerShell:
-    $env:VAULT_ADDR=""http://127.0.0.1:8200""
+$env:VAULT_ADDR=""http://127.0.0.1:8200""
 cmd.exe:
-    set VAULT_ADDR=http://127.0.0.1:8200
+set VAULT_ADDR=http://127.0.0.1:8200
 
 The unseal key and root token are displayed below in case you want to
 seal/unseal the Vault or re-authenticate.
@@ -121,52 +171,52 @@ Root Token: hvs.1gUdH9u1FHzQHWQN56OFD0kj
 Development mode should NOT be used in production installations!
 ";
 
-string vaultStatus = 
-@"Key             Value
----             -----
-Seal Type       shamir
-Initialized     true
-Sealed          false
-Total Shares    1
-Threshold       1
-Version         1.7.0
-Storage Type    inmem
-Cluster Name    vault-cluster-4d862b44
-Cluster ID      92143a5a-0566-be89-f229-5a9f9c47fb1a
-HA Enabled      false
+    string vaultStatus =
+    @"Key Value
+--- -----
+Seal Type shamir
+Initialized true
+Sealed false
+Total Shares 1
+Threshold 1
+Version 1.7.0
+Storage Type inmem
+Cluster Name vault-cluster-4d862b44
+Cluster ID 92143a5a-0566-be89-f229-5a9f9c47fb1a
+HA Enabled false
 ";
-string addedSecret = @"
+    string addedSecret = @"
 == Secret Path ==
 secret/data/demo
 
 ======= Metadata =======
-Key                Value
----                -----
-created_time       2022-03-31T17:39:48.0793425Z
-custom_metadata    <nil>
-deletion_time      n/a
-destroyed          false
-version            1
+Key Value
+--- -----
+created_time 2022-03-31T17:39:48.0793425Z
+custom_metadata <nil>
+deletion_time n/a
+destroyed false
+version 1
 ";
 
-string vaultGet = @"
+    string vaultGet = @"
 $ vault kv get secret/demo
 
 == Secret Path ==
 secret/data/demo
 
 ======= Metadata =======
-Key                Value
----                -----
-created_time       2022-03-31T17:51:28.8667824Z
-custom_metadata    <nil>
-deletion_time      n/a
-destroyed          false
-version            4
+Key Value
+--- -----
+created_time 2022-03-31T17:51:28.8667824Z
+custom_metadata <nil>
+deletion_time n/a
+destroyed false
+version 4
 
 ========== Data ==========
-Key                  Value
----                  -----
-secret-from-vault    hello
+Key Value
+--- -----
+secret-from-vault hello
 ";
 }
