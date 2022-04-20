@@ -12,23 +12,21 @@ Microsoft's
     Authorize Attribute
 </MudLink> or use
 <MudLink Href="https://docs.microsoft.com/en-us/aspnet/core/security/authorization/roles?view=aspnetcore-6.0" Target="_blank">
-    Role-based authorization
-</MudLink>.
+    Role-based authorization</MudLink>.
 Although you can use
 <MudLink Href="https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-6.0#authorize-attribute" Target="_blank">
     Authorize Attribute on a blazor
 </MudLink>
 page I don't think this utilizes Blazor's component based nature very well, and I think the best solution is to use Blazor's
 <MudLink Href="https://docs.microsoft.com/en-us/aspnet/core/blazor/security/?view=aspnetcore-6.0#authorizeview-component" Target="_blank">
-    AuthorizeView component
-</MudLink>.
+    AuthorizeView component</MudLink>.
 <br>
 <MudText Style="margin-top: 10px" Typo="Typo.h4">AuthorizeView component</MudText>
 <hr style="width: 60%">
 <br>
 The AuthorizeView component is great. It allows for so much control over what users can and can not see. I will give a small example to demonstrate.
 <CodeBlock CodeAsString="@AuthorizedView"></CodeBlock>
-In the code above if the user is Authorized he will see whatever is between &lt;Authorized&gt; tags, if the user is not Authorized he will see whatever is
+In the code above if the user is Authorized he will see whatever is between the &lt;Authorized&gt; tags, if the user is not Authorized he will see whatever is
 between the &lt;NotAuthorized&gt;. <br>
 This already gives so much power over what the user will see if he is not Authorized, every Component you have can have its own view if the user is not authorized.
 You can extend this power by using role-based authorization with the Roles parameter:
@@ -38,8 +36,8 @@ versions of the same page. For example, you can have a dashboard page with three
 This means if you're a user with both admin and common role you can see all the components on the page, if the user only has the common role he will only be able to see
 the two components.
 <MudText Style="margin-top: 10px" Typo="Typo.h6">The problem with role-based AuthorizeView component</MudText>
-I'm going to lay out a scenario, you have built and deployed your Blazorapplication, and it has many role-based AuthorizeViews but now you or the company decided that
-a component or multiple components can be viewed by more or less roles. Now you to need scan through your code and find all the components that need roles added or removed.
+I'm going to lay out a scenario, you have built and deployed your Blazor application, and it has many role-based AuthorizeViews but now you or the company decided that
+a component or multiple components can be viewed by more or less roles. Now you need to scan through your code and find all the components that need roles added or removed.
 Not only do you have to do that, now you need to redeploy your code. <br/>
 It is because of this problem I created the <b>NameBasedAuthorizedComponent</b>. NameBasedAuthorizeComponent is very similar to Microsoft's AuthorizeView, but you don't pass
 in roles as a parameter but rather a ComponentName you will then implement an interface that uses the ComponentName to retrieve the roles for that component. The great
@@ -47,20 +45,20 @@ thing about this is that you decide how you get roles for a component e.i. API c
 what roles can see what components you just need to alter some records in a table.
 <MudText Style="margin-top: 10px" Typo="Typo.h4">Getting Started</MudText>
 <hr style="width: 60%">
-Now that I have given you some background information on Authentication in Blazorand why I created the NameBasedAuthorizedComponent I am going to give you a full guide
-on how to get how to Authentication working in Blazorfrom scratch and with using the NameBasedAuthorizedComponent.
+Now that I have given you some background information on Authentication in Blazor and why I created the NameBasedAuthorizedComponent I am going to give you a full guide
+on how to get Authentication working in Blazor from scratch and with using the NameBasedAuthorizedComponent.
 <MudText Style="margin-top: 10px" Typo="Typo.h6">Picking an Identity Provider</MudText>
 <hr style="width: 40%">
 The first thing we need to do is pick an Identity Provider. If you don't know what an Identity Provider is I recommend doing some research but for now I will give you a brief
 explanation. It is what your site uses to determine who a user is, It can send info like their username, age, email ect. In our case we want an Identity Provider that
 will provide roles for a user or something similar. The Identity Provider I have chosen for this guide is <MudLink href="https://www.okta.com/" Target="_blank">Okta</MudLink> 
-, I like Okta because it's pretty easy to set up and gives you a lot of control
+, I like Okta because it's pretty easy to set up and gives you a lot of control.
 <MudText Style="margin-top: 10px" Typo="Typo.h6">Setting up okta</MudText>
 The first thing you need to do is create an okta account at <MudLink href="https://developer.okta.com/signup/" Target="_blank">https://developer.okta.com/signup/</MudLink>.
 <MudText>
     <img src="Images/OktaSignUp.PNG" alt="Okta signup form">
 </MudText>
-After you have signed in you should have a dashboard take looks like the below
+After you have signed in you should have a dashboard that looks like the below
 <MudText>
     <img src="Images/OktaMainDashboard.png" alt="Okta dashboard">
 </MudText>
