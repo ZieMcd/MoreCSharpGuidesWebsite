@@ -1,7 +1,7 @@
 @page "/NameBasedAuthorizeView"
-<PageTitle>More C# Guides: Blazorserver side Authentication & Authorization with Okta and NameBasedAuthorizeViewComponent</PageTitle>
+<PageTitle>More C# Guides: Blazor server side Authentication & Authorization with Okta and NameBasedAuthorizeViewComponent</PageTitle>
 <MudPaper Style="background: #f0f8ff; padding-top: 20px">
-<MudText Typo="Typo.h4" Align="Align.Center" Style="overflow: scroll;">Blazorserver side Authentication & Authorization with Okta and NameBasedAuthorizeViewComponent</MudText>
+<MudText Typo="Typo.h4" Align="Align.Center" Style="overflow: scroll;">Blazor server side Authentication & Authorization with Okta and NameBasedAuthorizeViewComponent</MudText>
 <hr style="width:75%; margin: auto; ">
 
 <MudText Typo="Typo.body1" Style="margin: 30px">
@@ -79,7 +79,7 @@ important, and we will circle back to them later. In the meantime name the appli
 After you click save you should be done. Your Okta app is set up!
 <MudText Style="margin-top: 10px" Typo="Typo.h6">Creating our BlazorProject</MudText>
 <hr style="width: 40%">
-For this guide I will be using a Blazorserver side project with .Net 6. The NameBasedAuthorizeViewComponent will work exactly the same as on a webassembly 
+For this guide I will be using a Blazor server side project with .Net 6. The NameBasedAuthorizeViewComponent will work exactly the same as on a webassembly 
 project but the setting up of Authentication will be slightly different. If you are using a webassembly project I recommend reading
 <MudLink Href="https://developer.okta.com/blog/2020/09/30/blazor-webassembly-wasm-dotnetcore" Target="_blank">
     this
@@ -95,7 +95,7 @@ and you should see the application you made earlier, click on it.
 <MudText>
     <img src="Images/OktaFindYourApp.png" alt="Where to find your okta app">
 </MudText>
-From your Okta we need Client ID, Client secret and Okta domain. We are going to put this in the <appsettings class="jso"></appsettings>n, so we can use this in our project as configuration.
+From your Okta we need Client ID, Client secret and Okta domain. We are going to put this in the appsetting.json file, so we can use this in our project as configuration.
 <MudText>
     <img src="Images/OktaWhatSettingsYouNeed.png" alt="What settings you need to copy from okta app">
 </MudText>
@@ -107,7 +107,7 @@ and then in-between app.UseRouting(); and app.MapBlazorHub(); add
 <CodeBlock CodeAsString="@UseAuth"></CodeBlock>
 Cover the content in App.razor with &lt;CascadingAuthenticationState&gt;
 <CodeBlock CodeAsString="@AppRazor"></CodeBlock>
-And with that Okta authentication is set up, and we can begin to use it
+And with that Okta authentication is set up, and we can begin to use it.
 <MudText Style="margin-top: 10px" Typo="Typo.h6">Created user sign in</MudText>
 We are going to make a controller that will be used to log users in and out. Create a folder called Controllers. In that folder create a class
 called AccountController.cs. The AccountController should look the like below
@@ -121,9 +121,9 @@ find your project's base url in Properties/launchSetting.json be sure to the htt
 <MudText>
     <img src="Images/OktaChangingUrlsInOkta.png" alt="Where to change okta redirect urls">
 </MudText>
-Before we log in with Okta in our project we to create and assign a user to our Okta app <br>
-In the Okta dashboard go to Directory->People. There should already be one person there if not create one by clicking Add person. Once you have created a person
-click on them.
+Before we log in with Okta in our project we need to create and assign a user to our Okta app <br>
+In the Okta dashboard go to Directory->People. There should already be one person there if not create one by clicking Add person. Once you have created a person,
+ click on them.
 <MudText>
     <img src="Images/OktaPeople.png" alt="Where find people in okta">
 </MudText>
@@ -132,7 +132,7 @@ Once a person is selected click Assign Applications and assign the application w
     <img src="Images/OktaSelectedPerson.png" alt="Select a person in okta"> <img src="Images/OktaAssignPerson.png" alt="Assign app to person in okta">
 </MudText>
 We are going to make a little display in the nav bar that redirects to our account controller. <br>
-Create a new Blazorcomponent called LoginDisplay.razor and put it in the shared folder. The code for component should look like the below
+Create a new Blazor component called LoginDisplay.razor and put it in the shared folder. The code for the component should look like the below
 <CodeBlock CodeAsString="@LogingDisplay"></CodeBlock>
 If the user is signed in they will see their name and link to sign out. If they are not signed in then they will see a link to sign in. <br>
 Add &lt;LoginDisplay /&gt; to the MainLayout.razor
@@ -150,22 +150,22 @@ After signing in you should now see the name of the user that signed in the top 
 <MudText>
     <img src="Images/ProjectHomepageAfterLogin.png" alt="Our project home page after login">
 </MudText>
-This means that Authentication is full set up and if you wanted you could you Microsoft's Default Authorize view
+This means that Authentication is fully set up and if you wanted you could use Microsoft's Default Authorize view
 <MudText Style="overflow: scroll; margin-top: 10px" Typo="Typo.h4"  >Using NameBasedAuthorizeViewComponent</MudText>
 <hr style="width: 60%">
-Now that we got Authentication set we can start to use NameBasedAuthorizeViewComponent but this does require a bit more set up, We need to get Okta to send us 
-a logged-in user's roles, and we need to implement INameBasedAuthorizationHelper which used to get the roles associated to a component.
+Now that we got Authentication set up we can start to use NameBasedAuthorizeViewComponent but this does require a bit more set up. We need to get Okta to send us 
+a logged-in user's roles, and we need to implement INameBasedAuthorizationHelper which is used to get the roles associated to a component.
 <MudText Style="margin-top: 10px" Typo="Typo.h6">Getting Okta to send us a users Roles</MudText>
 <hr style="width: 40%">
 Okta does not have roles but it does have something very similar, groups. We can then get okta to send us the groups a user belongs to as roles. <br>
-<MudText Style="margin-top: 10px" Typo="Typo.h6">Created Okta groups and assign user to a group</MudText>
+<MudText Style="margin-top: 10px" Typo="Typo.h6">Create Okta groups and assign user to a group</MudText>
 Before we can turn okta groups into roles we need to make some groups in okta and assign them to users. Head back to the okta dashboard Directory->Groups and click add Group
 <MudText>
     <img src="Images/OktaGroups.PNG" alt="Okta adding group">
 </MudText>
 Create two groups, Admin and SuperAdmin
 <MudText>
-    <img src="Images/OktaAddAdminGroup.PNG" alt="Okta creat add Admin group"> <img src="Images/OktaAddSuperAdminGroup.PNG" alt="Okta creat add SuperAdmin group">
+    <img src="Images/OktaAddAdminGroup.PNG" alt="Okta create and add Admin group"> <img src="Images/OktaAddSuperAdminGroup.PNG" alt="Okta creat add SuperAdmin group">
 </MudText>
 After Okta groups are created select the Admin group.
 <MudText>
@@ -179,14 +179,14 @@ Select the user you want to add to the admin group and click save
 <MudText>
     <img src="Images/OktaAssignGroupToPerson.PNG" alt="Okta assigning group to person">
 </MudText>
-<MudText Style="margin-top: 10px" Typo="Typo.h6">Turn Okta group into roles for our application</MudText>
-I don't want to go into too much detail about why we need to do this but basically,  in dotnet authentication a user should/could have roles and it gets the roles from
-the identity provider in form of a claim and that claim has to be a roles claim. Luckily in Okta we can add a claim, call it roles and add the Okta groups to it. <br>
-To get started go back to Okta dashboard Security->API and there should already be one called <i>default</i> click it.
+<MudText Style="margin-top: 10px" Typo="Typo.h6">Turn Okta groups into roles for our application</MudText>
+I don't want to go into too much detail about why we need to do this but basically, in dotnet authentication a user should/could have roles and it gets the roles from
+the identity provider in the form of a claim and that claim has to be a roles claim. Luckily in Okta we can add a claim, call it roles and add the Okta groups to it. <br>
+To get started go back to Okta dashboard Security->API and there should already be one called <i>default</i>. Click it.
 <MudText>
     <img src="Images/OktaAPI.PNG" alt="Okta API">
 </MudText>
-There should button called <i>Add Claim</i>
+There should be a button called <i>Add Claim</i>
 <MudText>
     <img src="Images/OktaAddClaim.PNG" alt="Okta add claim button">
 </MudText>
@@ -252,7 +252,7 @@ If the user only has the Everyone role they will only be Authorized to view the 
 <MudText><img src="Images/DemoPageEveryone.PNG" alt="Demo page where user has Everyone role"></MudText>
 <MudText Style="margin-top: 10px" Typo="Typo.h4">Conclusion</MudText>
 <hr style="width: 60%">
-This guide was pretty long, so I hope you got through it ok. It covered the process of getting Blazorsecured from start to finish. I also hope
+This guide was pretty long, so I hope you got through it ok. It covered the process of getting Blazor secured from start to finish. I also hope
 the nuget I made will be useful to you in future, and you find good scenarios to use it.
 <MudPaper>
     <MudText Style="margin-top: 10px" Typo="Typo.h6">Other useful guides and videos</MudText>
