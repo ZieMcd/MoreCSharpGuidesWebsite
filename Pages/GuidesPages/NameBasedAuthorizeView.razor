@@ -200,26 +200,26 @@ Also before continuing we need to alter Domain in <i>appsetting.json</i> by appe
 <CodeBlock CodeAsString="@NewAppSetting"></CodeBlock>
 <MudText Style="margin-top: 10px; overflow: scroll;" Typo="Typo.h4">Using NameBasedAuthorizeViewComponent</MudText>
 <hr style="width: 60%">
-Now Okta is fully set up for our needs and we will need to go there dashboard for the rest of this guide and the rest of the guide will be about how to use
+Now Okta is fully set up for our needs and we don't need to go to their dashboard for the rest of this guide. The rest of the guide will be about how to use
 the NameBasedAuthorizeViewComponent nuget.
 <MudText Style="margin-top: 10px" Typo="Typo.h6">Installation</MudText>
-We are going to use a dotnet .NET CLI command to do so
+To install the package we are going to use a .NET CLI command
 <CodeBlock CodeAsString="dotnet add package Ziemcd.Authorization.NameBasedAuthorizeViewComponent"></CodeBlock>
 Or you could use PMC:
 <CodeBlock CodeAsString=" Install-Package Ziemcd.Authorization.NameBasedAuthorizeViewComponent "></CodeBlock>
 You also need to add NameBasedAuthorizeViewComponent.Components to _Imports.cs
 <CodeBlock CodeAsString="@import"></CodeBlock>
 <MudText Style="margin-top: 10px" Typo="Typo.h6">Implementing INameBasedAuthorizationHelper</MudText>
-Now comes the most important bit Implementing INameBasedAuthorizationHelper. Before I show you the INameBasedAuthorizationHelper interface I want to show you the
+Now comes the most important bit, Implementing INameBasedAuthorizationHelper. Before I show you the INameBasedAuthorizationHelper interface I want to show you the
 NameBasedAuthorizeViewComponent in Action.
 <CodeBlock CodeAsString="@NameComponent"></CodeBlock>
-As you can see NameBasedAuthorizeView is very similar to Microsoft's AuthorizeView but you pass in a parameter <i>ComponentAuthName</i> this will be used in our
+As you can see NameBasedAuthorizeView is very similar to Microsoft's AuthorizeView but you pass in a parameter <i>ComponentAuthName</i>. ComponentAuthName will be used in our
 implementation of INameBasedAuthorizationHelper.
 <CodeBlock CodeAsString="@INameBasedAuthorizationHelper"></CodeBlock>
 As you can see this Interface has two Methods <br>
 <b>GetRolesForComponent</b> <br>
 If you do pass in a value for the parameter ComponentAuthName this method gets called and the parameter you passed into the component will get passed into this
-method. This method must a return comma delimited list of roles that are allowed to access the component e.g. "Admin","CEO","Everyone" <br>
+method. This method must return a comma delimited list of roles that are allowed to access the component e.g. "Admin","CEO","Everyone" <br>
 <b>GetRolesFromRoute</b> <br>
 GetRolesFromRoute is a fallback method, when ComponentAuthName is not passed to NameBasedAuthorizeView thus the route of the component is passed the to method
 e.g. https://localhost:7082/counter.When Implementing this I recommend injecting Microsoft.AspNetCore.Components.NavigationManger and using .ToBaseRelativePath(String) 
