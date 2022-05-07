@@ -231,24 +231,24 @@ NameBasedAuthorizationHelper. Copy and paste the below for that class.
 As we can see, this class implements INameBasedAuthorizationHelper and its two methods. It creates a List of type NavRoleItem which is a record type we create
 at the bottom of the file. This list acts as a fake table that stores a component and the roles that have access to it. E.g. the Admin role has access to
 the AdminComponent. Then the two methods query against that fake table to get the roles for a certain component.
-<MudText Style="margin-top: 10px" Typo="Typo.h6">Adding NameBasedAuthorizeView to pipeline</MudText>
+<MudText Style="margin-top: 10px" Typo="Typo.h6">Adding NameBasedAuthorizeView to the pipeline</MudText>
 Now you need to add NameBasedAuthorizeComponent in program.cs passing in the instance of INameBaseAuthorizationHelper that you created
 <CodeBlock CodeAsString="builder.Services.AddNameBasedAuthorizeComponent<NameBasedAuthorizationHelper>();"></CodeBlock>
 <MudText Style="margin-top: 10px" Typo="Typo.h6">Creating a demo page</MudText>
-Let's create a demo page to make sure everything is working. In the Pages folder of your project create a Blazorpage by creating a file called DemoPage.razor in
+Let's create a demo page to make sure everything is working. In the Pages folder of your project create a Blazor page by creating a file called DemoPage.razor in
 this page we can use the NameBasedAuthorizeViewComponent.
 <CodeBlock CodeAsString="@DemoPage"></CodeBlock>
 This page has two NameBasedAuthorizeViews components, one named AdminComponent and one named EveryoneComponent. As we can see by our implementation anyone who
-has the admin role will be authorized to view the AdminComponent and anyone who has Everyone role will be authorized EveryoneComponent. <br>
+has the admin role will be authorized to view the AdminComponent and anyone who has Everyone role will be authorized to view EveryoneComponent. <br>
 Let us add this new page to our navigation by editing the <i>NavMenu.razor</i>
 <CodeBlock CodeAsString="@NavMenu"></CodeBlock>
-I'm not showing the whole NavMenu page, only what is relevant. We added a new nav item and wrapped AuthorizeView, This means only logged-in users will see
+I'm not showing the whole NavMenu page, only what is relevant. We added a new nav item and wrapped it in a AuthorizeView, This means only logged-in users will see
 the nav item for the demo page.
 <MudText Style="margin-top: 10px" Typo="Typo.h6">Testing our app</MudText>
 Start the application with <i>dotnet run</i>, and I also recommend launching the app in an incognito window. Login and go to the demo page. <br>
-If the user has both Everyone and Admin role will be authorized to view both components
+If the user has both Everyone and Admin roles they will be authorized to view both components
 <MudText><img src="Images/DemoPageBoth.PNG" alt="Demo page where user has both Admin and Everyone role"></MudText>
-If the user only has the Everyone role they will only be Authorized to view the Everyone component
+If the user only has the Everyone role they will only be authorized  to view the Everyone component
 <MudText><img src="Images/DemoPageEveryone.PNG" alt="Demo page where user has Everyone role"></MudText>
 <MudText Style="margin-top: 10px" Typo="Typo.h4">Conclusion</MudText>
 <hr style="width: 60%">
